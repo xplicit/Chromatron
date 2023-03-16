@@ -15,10 +15,10 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using Microsoft.Extensions.Logging;
 
-global using static Chromely.Interop;
-global using static Chromely.Interop.User32;
-global using static Chromely.NativeHosts.InteropLinux;
-global using static Chromely.NativeHosts.InteropMac;
+global using static Chromely.NativeHosts.WinHost.Interop;
+global using static Chromely.NativeHosts.WinHost.Interop.User32;
+global using static Chromely.NativeHosts.LinuxHost.InteropLinux;
+global using static Chromely.NativeHosts.MacHost.InteropMac;
 
 global using Chromely.Browser;
 global using Chromely.Core;

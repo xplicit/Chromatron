@@ -1,6 +1,12 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+using Chromely.NativeHosts.LinuxHost;
+using Chromely.NativeHosts.MacHost;
+using Chromely.NativeHosts.WinHost;
+using Chromely.NativeHosts.WinHost.Hooks;
+using Chromely.NativeHosts.WinHost.WinBase;
+
 namespace Chromely;
 
 /// <inheritdoc/>
@@ -37,13 +43,13 @@ public abstract class ChromelyAppBase : ChromelyApp
 
             case ChromelyPlatform.Windows:
                 services.TryAddSingleton<IWindowMessageInterceptor, DefaultWindowMessageInterceptor>();
-                services.TryAddSingleton<IKeyboadHookHandler, DefaulKeyboadHookHandler>();
+                services.TryAddSingleton<IKeyboardHookHandler, DefaultKeyboardHookHandler>();
                 services.TryAddSingleton<IChromelyNativeHost, ChromelyWinHost>();
                 break;
 
             default:
                 services.TryAddSingleton<IWindowMessageInterceptor, DefaultWindowMessageInterceptor>();
-                services.TryAddSingleton<IKeyboadHookHandler, DefaulKeyboadHookHandler>();
+                services.TryAddSingleton<IKeyboardHookHandler, DefaultKeyboardHookHandler>();
                 services.TryAddSingleton<IChromelyNativeHost, ChromelyWinHost>();
                 break;
         }

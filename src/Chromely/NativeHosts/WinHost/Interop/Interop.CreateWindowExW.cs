@@ -6,7 +6,7 @@
 #pragma warning disable CS0618
 #pragma warning disable CA1401
 
-namespace Chromely;
+namespace Chromely.NativeHosts.WinHost;
 
 public static partial class Interop
 {

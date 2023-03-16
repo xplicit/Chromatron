@@ -1,21 +1,25 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-namespace Chromely.NativeHosts;
+using Chromely.NativeHosts.WinHost.Hooks;
+using Keys = Chromely.NativeHosts.WinHost.Interop.User32.Keys;
+
+namespace Chromely.NativeHosts.WinHost.WinBase;
+
 
 /// <summary>
-/// Default implementation of keyboard handler of type <see cref="IKeyboadHookHandler"/>.
+/// Default implementation of keyboard handler of type <see cref="IKeyboardHookHandler"/>.
 /// </summary>
-public class DefaulKeyboadHookHandler : IKeyboadHookHandler
+public class DefaultKeyboardHookHandler : IKeyboardHookHandler
 {
     protected IChromelyNativeHost? _nativeHost;
     protected IWindowOptions _options;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="DefaulKeyboadHookHandler"/>.
+    /// Initializes a new instance of <see cref="DefaultKeyboardHookHandler"/>.
     /// </summary>
     /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
-    public DefaulKeyboadHookHandler(IChromelyConfiguration config)
+    public DefaultKeyboardHookHandler(IChromelyConfiguration config)
     {
         _options = config?.WindowOptions ?? new WindowOptions();
     }
@@ -83,8 +87,6 @@ public class DefaulKeyboadHookHandler : IKeyboadHookHandler
         return true;
     }
 
-    #region
-
     /// <summary>
     /// Determines whether the specified keyboard input should be allowed to be processed by the OS in Kiosk mode.
     /// </summary>
@@ -134,24 +136,4 @@ public class DefaulKeyboadHookHandler : IKeyboadHookHandler
         // Allow anything else (like letters, numbers, spacebar, braces, and so on).
         return true;
     }
-
-    #endregion
 }
-
-#region Keyboard param
-internal class KeyboardParam
-{
-    public KeyboardParam(bool isKeyUp, bool alt, bool control, Keys key)
-    {
-        IsKeyUp = isKeyUp;
-        Alt = alt;
-        Control = control;
-        Key = key;
-    }
-    public bool IsKeyUp { get; set; }
-    public bool Alt { get; set; }
-    public bool Control { get; set; }
-    public Keys Key { get; set; }
-}
-
-#endregion

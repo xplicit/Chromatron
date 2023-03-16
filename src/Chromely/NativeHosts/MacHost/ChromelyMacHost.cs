@@ -5,7 +5,7 @@
 #pragma warning disable IDE0034
 #pragma warning disable IDE0052
 
-namespace Chromely.NativeHosts;
+namespace Chromely.NativeHosts.MacHost;
 
 /// <summary>
 /// Represents Mac OS native host.

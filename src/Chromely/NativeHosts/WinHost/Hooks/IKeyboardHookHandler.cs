@@ -1,12 +1,12 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-namespace Chromely.NativeHosts;
+namespace Chromely.NativeHosts.WinHost.Hooks;
 
 /// <summary>
 /// Represents Windows OS keyboard handler.
 /// </summary>
-public interface IKeyboadHookHandler
+public interface IKeyboardHookHandler
 {
     /// <summary>
     /// Set the Windows OS native host.

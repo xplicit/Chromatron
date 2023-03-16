@@ -4,7 +4,7 @@
 
 #nullable disable
 
-namespace Chromely;
+namespace Chromely.NativeHosts.WinHost;
 
 public static partial class Interop
 {

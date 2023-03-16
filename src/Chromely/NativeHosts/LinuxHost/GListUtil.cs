@@ -1,7 +1,7 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-namespace Chromely.NativeHosts;
+namespace Chromely.NativeHosts.LinuxHost;
 
 public class GListUtil
 {
@@ -32,9 +32,7 @@ public class GListUtil
 
         return IntPtr.Zero;
     }
-
-    #region DLLIMPORTS GlibLib
-
+    
     [DllImport(Library.GlibLib, CallingConvention = CallingConvention.Cdecl)]
     static extern int g_list_length(IntPtr l);
 
@@ -43,6 +41,4 @@ public class GListUtil
 
     [DllImport(Library.GlibLib, CallingConvention = CallingConvention.Cdecl)]
     static extern IntPtr g_list_nth_data(IntPtr l, uint n);
-
-    #endregion
 }

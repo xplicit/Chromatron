@@ -1,7 +1,7 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-namespace Chromely.NativeHosts;
+namespace Chromely.NativeHosts.LinuxHost;
 
 public delegate void GClosureNotify();
 
@@ -153,7 +153,7 @@ internal partial class InteropLinux
 
     // MessageBox
     [DllImport(Library.GtkLib, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern IntPtr gtk_message_dialog_new(IntPtr parent_window, DialogFlags flags, MessageType type, ButtonsType bt, string msg, IntPtr args);
+    internal static extern IntPtr gtk_message_dialog_new(IntPtr parent_window, GtkDialogFlags flags, GtkMessageType type, GtkButtonsType bt, string msg, IntPtr args);
 
     [DllImport(Library.GtkLib, CallingConvention = CallingConvention.Cdecl)]
     internal static extern int gtk_dialog_run(IntPtr raw);

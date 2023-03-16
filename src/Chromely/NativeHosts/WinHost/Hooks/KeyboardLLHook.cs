@@ -3,19 +3,19 @@
 
 #pragma warning disable CS8602
 
-namespace Chromely.NativeHosts;
+namespace Chromely.NativeHosts.WinHost.Hooks;
 
 public class KeyboardLLHook : WindowsHookBase
 {
 	protected IntPtr _handler;
 	protected IWindowOptions _options;
-	protected IKeyboadHookHandler _keyboadHandler;
+	protected IKeyboardHookHandler _keyboardHandler;
 
-	public KeyboardLLHook(IntPtr handler, IWindowOptions options, IKeyboadHookHandler keyboadHandler) : base(WH.KEYBOARD_LL)
+	public KeyboardLLHook(IntPtr handler, IWindowOptions options, IKeyboardHookHandler keyboardHandler) : base(WH.KEYBOARD_LL)
 	{
 		_handler = handler;
 		_options = options;
-		_keyboadHandler = keyboadHandler;
+		_keyboardHandler = keyboardHandler;
 		HookEventHandler = OnKeyboardEvent;
 	}
 
@@ -33,6 +33,6 @@ public class KeyboardLLHook : WindowsHookBase
 		bool alt = IsKeyPressed(Keys.Menu);
 		bool control = IsKeyPressed(Keys.ControlKey);
 
-		return _keyboadHandler.HandleKey(_handler, new KeyboardParam(wParam == WM.KEYUP, alt, control, key));
+		return _keyboardHandler.HandleKey(_handler, new KeyboardParam(wParam == WM.KEYUP, alt, control, key));
 	}
 }

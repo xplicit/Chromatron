@@ -7,12 +7,15 @@
 #pragma warning disable CA1822
 #pragma warning disable CA2211
 
-namespace Chromely.NativeHosts;
+using Chromely.NativeHosts.Helpers;
+using Chromely.NativeHosts.WinHost.Hooks;
+
+namespace Chromely.NativeHosts.WinHost.WinBase;
 
 /// <summary>
 /// Represents Windows OS native host.
 /// </summary>
-public abstract partial class NativeHostBase : IChromelyNativeHost
+public abstract partial class WinHostBase : IChromelyNativeHost
 {
     private const int PROCESS_IDLE_ID = 0;
 
@@ -20,7 +23,7 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
     private static extern IntPtr GetConsoleWindow();
 
     [DllImport(Libraries.User32, SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
-    private unsafe static extern IntPtr LoadIconW(
+    private static extern unsafe IntPtr LoadIconW(
      IntPtr hInstance,
      IntPtr lpIconName);
 
@@ -28,12 +31,12 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
     protected const uint IDI_APPLICATION = 32512;
     protected const int CW_USEDEFAULT = unchecked((int)0x80000000);
     protected static RECT DefaultBounds => new(CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT);
-    public static NativeHostBase NativeInstance;
+    public static WinHostBase NativeInstance;
     protected static bool WindowInterceptorInitialized = false;
 
     protected readonly IChromelyConfiguration _config;
     protected readonly IWindowMessageInterceptor _messageInterceptor;
-    protected readonly IKeyboadHookHandler _keyboadHandler;
+    protected readonly IKeyboardHookHandler _keyboardHandler;
     protected readonly IWindowOptions _options;
 
     protected IntPtr _handle;
@@ -50,28 +53,28 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
     public event EventHandler<CloseEventArgs> HostClose;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="NativeHostBase"/>.
+    /// Initializes a new instance of <see cref="WinHostBase"/>.
     /// </summary>
     /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
     /// <param name="messageInterceptor">Instance of <see cref="IWindowMessageInterceptor"/>.</param>
-    /// <param name="keyboadHandler">Instance of <see cref="IKeyboadHookHandler"/>.</param>
-    public NativeHostBase(IChromelyConfiguration config, IWindowMessageInterceptor messageInterceptor, IKeyboadHookHandler keyboadHandler)
+    /// <param name="keyboardHandler">Instance of <see cref="IKeyboardHookHandler"/>.</param>
+    public WinHostBase(IChromelyConfiguration config, IWindowMessageInterceptor messageInterceptor, IKeyboardHookHandler keyboardHandler)
     {
         _config = config;
         _options = _config?.WindowOptions ?? new WindowOptions();
         _isInitialized = false;
         _handle = IntPtr.Zero;
         _messageInterceptor = messageInterceptor;
-        _keyboadHandler = keyboadHandler;
+        _keyboardHandler = keyboardHandler;
     }
 
     /// <inheritdoc/>
     public IntPtr Handle => _handle;
 
     /// <inheritdoc/>
-    public unsafe virtual void CreateWindow()
+    public virtual unsafe void CreateWindow()
     {
-        _keyboadHandler?.SetNativeHost(this);
+        _keyboardHandler?.SetNativeHost(this);
         _windowFrameless = _options.WindowFrameless;
 
         _wndProc = WndProc;
@@ -288,8 +291,6 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         }
     }
 
-    #region Create Window Protected
-
     /// <summary>
     /// Get window bounds.
     /// </summary>
@@ -391,10 +392,6 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         var handler = HostSizeChanged;
         handler?.Invoke(width, new SizeChangedEventArgs(width, height));
     }
-
-    #endregion Create Window Protected
-
-    #region Create Window Private
 
     /// <summary>
     /// Gets window icon handle.
@@ -542,12 +539,6 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         };
     }
 
-    #endregion Create Window Private
-
-    #region WndProc
-
-
-
     /// <summary>
     /// Processes messages for the native host.
     /// </summary>
@@ -639,8 +630,6 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         return (DefWindowProcW(hWnd, wmMsg, wParam, lParam));
     }
 
-    #region WndProc Methods
-
     protected virtual void HandleSizeChanged(int width, int height)
     {
         HostSizeChanged?.Invoke(this, new SizeChangedEventArgs(width, height));
@@ -688,12 +677,7 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
 
         return isHandled;
     }
-
-    #endregion WndProc Methods
-    #endregion WndProc
-
-    #region Message Loop
-
+    
     protected static void RunMessageLoopInternal()
     {
         MSG msg = new();
@@ -709,15 +693,11 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         }
     }
 
-    #endregion
-
-    #region Install/Detach Hooks
-
     public virtual void InstallHooks(IntPtr handle)
     {
         try
         {
-            _keyboardHook = new KeyboardLLHook(handle, _options, _keyboadHandler);
+            _keyboardHook = new KeyboardLLHook(handle, _options, _keyboardHandler);
             _keyboardHook.Install();
         }
         catch
@@ -736,9 +716,6 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         catch { }
     }
 
-
-    #endregion
-
     protected static readonly HT[] BorderHitTestResults =
     {
             HT.TOP,
@@ -750,5 +727,5 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
             HT.LEFT,
             HT.RIGHT,
             HT.BORDER
-        };
+    };
 }

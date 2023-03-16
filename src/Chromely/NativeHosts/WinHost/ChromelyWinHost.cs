@@ -3,19 +3,22 @@
 
 #nullable disable
 
-namespace Chromely.NativeHosts;
+using Chromely.NativeHosts.WinHost.Hooks;
+using Chromely.NativeHosts.WinHost.WinBase;
+
+namespace Chromely.NativeHosts.WinHost;
 
 /// <inheritdoc/>
-public class ChromelyWinHost : NativeHostBase
+public class ChromelyWinHost : WinHostBase
 {
     /// <summary>
     /// Initializes a new instance of <see cref="ChromelyWinHost"/>.
     /// </summary>
     /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
     /// <param name="messageInterceptor">Instance of <see cref="IWindowMessageInterceptor"/>.</param>
-    /// <param name="keyboadHandler">Instance of <see cref="IKeyboadHookHandler"/>.</param>
-    public ChromelyWinHost(IChromelyConfiguration config, IWindowMessageInterceptor messageInterceptor, IKeyboadHookHandler keyboadHandler)
-        : base(config, messageInterceptor, keyboadHandler)
+    /// <param name="keyboardHandler">Instance of <see cref="IKeyboardHookHandler"/>.</param>
+    public ChromelyWinHost(IChromelyConfiguration config, IWindowMessageInterceptor messageInterceptor, IKeyboardHookHandler keyboardHandler)
+        : base(config, messageInterceptor, keyboardHandler)
     {
     }
 

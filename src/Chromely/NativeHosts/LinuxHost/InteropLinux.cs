@@ -1,7 +1,7 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-namespace Chromely.NativeHosts;
+namespace Chromely.NativeHosts.LinuxHost;
 
 internal partial class InteropLinux
 {
@@ -59,8 +59,6 @@ internal partial class InteropLinux
             Logger.Instance.Log.LogError(exception);
         }
     }
-
-    #region X11
 
     [StructLayout(LayoutKind.Sequential)]
     internal struct XVisualInfo
@@ -241,6 +239,4 @@ internal partial class InteropLinux
 
         return "NotFound";
     }
-
-    #endregion
 }

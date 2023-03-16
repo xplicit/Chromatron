@@ -5,7 +5,8 @@
 #pragma warning disable CA1806
 #pragma warning disable IDE0034
 
-namespace Chromely.NativeHosts;
+using Chromely.NativeHosts.Helpers;
+namespace Chromely.NativeHosts.LinuxHost;
 
 /// <summary>
 /// Represents Linux OS native host.

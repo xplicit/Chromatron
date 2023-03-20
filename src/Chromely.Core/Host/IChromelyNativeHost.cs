@@ -45,7 +45,7 @@ public interface IChromelyNativeHost : IDisposable
     /// Function to get the native host handle
     /// </summary>
     /// <remarks>
-    /// Note that this is different from the "Handle". 
+    /// Note that this is different from the "Handle".
     /// Particularly used for Linux Gtk Window XID.
     /// </remarks>
     /// <returns>The native host handle of type <see cref="IntPtr"/>. </returns>
@@ -55,6 +55,11 @@ public interface IChromelyNativeHost : IDisposable
     /// Starts the host window.
     /// </summary>
     void Run();
+
+    /// <summary>
+    /// Initiates shutdown of host window
+    /// </summary>
+    void Shutdown();
 
     /// <summary>
     /// Gets the host window size.
@@ -97,14 +102,14 @@ public interface IChromelyNativeHost : IDisposable
     /// <param name="title">The window host title.</param>
     void SetWindowTitle(string title);
 
-    /// <summary> 
-    /// Gets the current window state Maximised / Normal / Minimised etc. 
+    /// <summary>
+    /// Gets the current window state Maximised / Normal / Minimised etc.
     /// </summary>
     /// <returns> The window state of instance <see cref="WindowState"/>.</returns>
     WindowState GetWindowState();
 
-    /// <summary> 
-    /// Sets window state. Maximise / Minimize / Restore. 
+    /// <summary>
+    /// Sets window state. Maximise / Minimize / Restore.
     /// </summary>
     /// <param name="state"> The state to set. </param>
     /// <returns> True if it succeeds, false if it fails. </returns>

@@ -39,4 +39,10 @@ internal class InteropMac
 
     [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
     internal static extern void quit(IntPtr application, IntPtr pool);
+
+    [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern void minimize(IntPtr view);
+
+    [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern void maximize(IntPtr view);
 }

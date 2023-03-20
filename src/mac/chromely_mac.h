@@ -61,6 +61,8 @@ _DLL_EXPORT void createwindow(CHROMELYPARAM* pParam);
 _DLL_EXPORT APPDATA createwindowdata(CHROMELYPARAM* pParam);
 _DLL_EXPORT void run(void* application);
 _DLL_EXPORT void quit(void* application, void* pool);
+_DLL_EXPORT void minimize(void* view);
+_DLL_EXPORT void maximize(void* view);
 
 #ifdef __cplusplus
 }

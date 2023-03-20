@@ -108,8 +108,8 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         return 1.0f;
     }
 
-    /// <summary> 
-    /// Gets the current window state Maximised / Normal / Minimised etc. 
+    /// <summary>
+    /// Gets the current window state Maximised / Normal / Minimised etc.
     /// </summary>
     /// <returns> The window state. </returns>
     public virtual WindowState GetWindowState()
@@ -118,15 +118,23 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         return WindowState.Normal;
     }
 
-    /// <summary> 
-    /// Sets window state. Maximise / Minimize / Restore. 
+    /// <summary>
+    /// Sets window state. Maximise / Minimize / Restore.
     /// </summary>
     /// <param name="state"> The state to set. </param>
     /// <returns> True if it succeeds, false if it fails. </returns>
     public virtual bool SetWindowState(WindowState state)
     {
-        // TODO required for frameless Maccocoa mode
-        return false;
+        switch (state)
+        {
+            case WindowState.Maximize:
+                maximize(_viewHandle);
+                break;
+            case WindowState.Minimize:
+                minimize(_viewHandle);
+                break;
+        }
+        return true;
     }
 
     /// <inheritdoc/>
@@ -137,6 +145,11 @@ public partial class ChromelyMacHost : IChromelyNativeHost
     /// <inheritdoc/>
     public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
     {
+    }
+
+    public virtual void Shutdown()
+    {
+        CefRuntime.QuitMessageLoop();
     }
 
     /// <inheritdoc/>
@@ -155,9 +168,6 @@ public partial class ChromelyMacHost : IChromelyNativeHost
     public virtual void ToggleFullscreen(IntPtr hWnd)
     {
     }
-
-    #region Create & Manage Window
-
 
     /// <summary>
     /// Interop - run callback (required by libchromely.dylib).
@@ -302,9 +312,6 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         return configParam;
     }
 
-    #endregion
-
-    #region Title Encoding
     private static bool TitleNonASCIIChars(string title)
     {
         return (System.Text.Encoding.UTF8.GetByteCount(title) != title.Length);
@@ -329,6 +336,4 @@ public partial class ChromelyMacHost : IChromelyNativeHost
 
         return IntPtr.Zero;
     }
-
-    #endregion
 }

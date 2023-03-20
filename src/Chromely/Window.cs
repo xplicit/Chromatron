@@ -68,51 +68,24 @@ public partial class Window : ChromiumBrowser, IChromelyWindow
     /// <inheritdoc/>
     public virtual void Minimize()
     {
-        if (Handle != IntPtr.Zero)
-        {
-            if (_config.WindowOptions.WindowFrameless)
-            {
-                _config.WindowOptions.WindowState = WindowState.Minimize;
-            }
-
-            ShowWindow(Handle, SW.SHOWMINIMIZED);
-        }
+        NativeHost?.SetWindowState(WindowState.Minimize);
     }
 
     /// <inheritdoc/>
     public virtual void Maximize()
     {
-        if (Handle != IntPtr.Zero)
-        {
-            if (_config.WindowOptions.WindowFrameless)
-            {
-                _config.WindowOptions.WindowState = WindowState.Maximize;
-            }
-
-            ShowWindow(Handle, SW.SHOWMAXIMIZED);
-        }
+        NativeHost?.SetWindowState(WindowState.Maximize);
     }
 
     /// <inheritdoc/>
     public virtual void Restore()
     {
-        if (Handle != IntPtr.Zero)
-        {
-            if (_config.WindowOptions.WindowFrameless)
-            {
-                _config.WindowOptions.WindowState = WindowState.Normal;
-            }
-
-            ShowWindow(Handle, SW.RESTORE);
-        }
+        NativeHost?.SetWindowState(WindowState.Normal);
     }
 
     /// <inheritdoc/>
     public virtual void Close()
     {
-        if (Handle != IntPtr.Zero)
-        {
-            SendMessageW(Handle, WM.CLOSE);
-        }
+        NativeHost?.Shutdown();
     }
 }

@@ -153,6 +153,11 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    public virtual void Shutdown()
+    {
+        throw new NotImplementedException();
+    }
+
     /// <inheritdoc/>
     public virtual Size GetWindowClientSize()
     {
@@ -165,8 +170,8 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         return 1.0f;
     }
 
-    /// <summary> 
-    /// Gets the current window state Maximised / Normal / Minimised etc. 
+    /// <summary>
+    /// Gets the current window state Maximised / Normal / Minimised etc.
     /// </summary>
     /// <returns> The window state. </returns>
     public virtual WindowState GetWindowState()
@@ -175,8 +180,8 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         return WindowState.Normal;
     }
 
-    /// <summary> 
-    /// Sets window state. Maximise / Minimize / Restore. 
+    /// <summary>
+    /// Sets window state. Maximise / Minimize / Restore.
     /// </summary>
     /// <param name="state"> The state to set. </param>
     /// <returns> True if it succeeds, false if it fails. </returns>
@@ -272,9 +277,6 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
             Logger.Instance.Log.LogError(exception);
         }
     }
-
-
-    #region CreateWindow
 
     protected delegate void SizeAllocateCallback(IntPtr window, IntPtr allocation, int baseline);
     protected delegate bool ResizeCallback(IntPtr window, GtkEvent gtkEvent, IntPtr data);
@@ -648,6 +650,4 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
     protected virtual void FreeData()
     {
     }
-
-    #endregion CreateWindow
 }

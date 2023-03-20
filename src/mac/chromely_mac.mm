@@ -135,10 +135,7 @@ namespace {
 // to be removed from the screen.
 - (BOOL)windowShouldClose:(NSWindow*)window {
   if (!force_close_) {
-       int isClosing = chromelyParam_.closeBrowserCallback();
-       if (isClosing == 1) {
-         return NO;
-       }
+        /// CHROMELYPARAM- function pointer?
     }
 
   // Don't want any more delegate callbacks after we destroy ourselves.
@@ -403,3 +400,10 @@ void quit(void* application, void* pool) {
     [application performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
 }
 
+void minimize(void* view) {
+  [[view window] performMiniaturize:nil];
+}
+
+void maximize(void* view) {
+  [[view window] performZoom:nil];
+}

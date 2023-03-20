@@ -162,6 +162,15 @@ public abstract partial class WinHostBase : IChromelyNativeHost
     }
 
     /// <inheritdoc/>
+    public virtual void Shutdown()
+    {
+        if (_handle != IntPtr.Zero)
+        {
+            SendMessageW(_handle, WM.CLOSE);
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual Size GetWindowClientSize()
     {
         return GetClientSize();
@@ -677,7 +686,7 @@ public abstract partial class WinHostBase : IChromelyNativeHost
 
         return isHandled;
     }
-    
+
     protected static void RunMessageLoopInternal()
     {
         MSG msg = new();

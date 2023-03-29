@@ -1,11 +1,12 @@
-/* 
+/*
 * chromely_mac.m
 */
 
 // include the Cocoa Frameworks
-#import <Cocoa/Cocoa.h>    
+#import <Cocoa/Cocoa.h>
 #import <objc/runtime.h>
 #include "cef_application_mac.h"
+#include "include/internal/cef_types_mac.h"
 
 // include Chromely custom header
 #include "chromely_mac.h"
@@ -219,7 +220,7 @@ namespace {
 * ChromelyAppDelegate manages events.
 */
 
-@implementation ChromelyAppDelegate 
+@implementation ChromelyAppDelegate
 
 - (void)setParams:(CHROMELYPARAM)param {
     chromelyParam_ = param;
@@ -250,7 +251,7 @@ namespace {
     NSString *title = [NSString stringWithUTF8String: chromelyParam_.titleUtf8Ptr];
 	  [window_ setTitle:title];
     [window_ setAcceptsMouseMovedEvents:YES];
-	
+
     // No dark mode, please
     window_.appearance = [NSAppearance appearanceNamed:NSAppearanceNameAqua];
 
@@ -270,15 +271,23 @@ namespace {
     if (chromelyParam_.nomaxbutton == 1)
         [[window_ standardWindowButton:NSWindowZoomButton] setHidden:YES];
 
-	[window_.contentView setWantsLayer:YES];
+    // Make window frameless without buttons and draggable invisible titlebar
+    if (chromelyParam_.frameless == 1) {
+        [[window_ standardWindowButton:NSWindowCloseButton] setHidden:YES];
+        [[window_ standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
+        [[window_ standardWindowButton:NSWindowZoomButton] setHidden:YES];
+        window_.titleVisibility = NSWindowTitleHidden;
+        window_.titlebarAppearsTransparent = true;
+    }
+
     [window_ makeKeyAndOrderFront:NSApp];
-	
-	// Rely on the window delegate to clean us up rather than immediately
-	// releasing when the window gets closed. We use the delegate to do
-	// everything from the autorelease pool so the window isn't on the stack
-	// during cleanup (ie, a window close from javascript).
-	[window_ setReleasedWhenClosed:NO];
-	
+
+    // Rely on the window delegate to clean us up rather than immediately
+    // releasing when the window gets closed. We use the delegate to do
+    // everything from the autorelease pool so the window isn't on the stack
+    // during cleanup (ie, a window close from javascript).
+    [window_ setReleasedWhenClosed:NO];
+
     [NSApp activateIgnoringOtherApps:YES];
 }
 
@@ -286,12 +295,12 @@ namespace {
     if (chromelyParam_.fullscreen == 1)
         return NSWindowStyleMaskFullScreen;
 
-    if (chromelyParam_.frameless == 1)
-        return NSWindowStyleMaskBorderless;
+    NSUInteger styleMask = NSWindowStyleMaskTitled
+                           | NSWindowStyleMaskClosable
+                           | NSWindowStyleMaskMiniaturizable;
 
-    NSUInteger styleMask = NSTitledWindowMask 
-                           | NSClosableWindowMask
-                           | NSMiniaturizableWindowMask;
+    if (chromelyParam_.frameless == 1)
+        styleMask |= NSWindowStyleMaskFullSizeContentView;
 
     if (chromelyParam_.noresize == 0)
         styleMask |= NSWindowStyleMaskResizable;
@@ -307,7 +316,7 @@ namespace {
     NSRect windowRect = [window_ frame];
     NSRect contentRect = [window_ contentRectForFrameRect:windowRect];
     chromelyParam_.resizeCallback(contentRect.size.width, contentRect.size.height);
-} 
+}
 
 - (void)tryToTerminateApplication:(NSApplication*)app {
     chromelyParam_.exitCallback();
@@ -346,7 +355,7 @@ void createwindow(CHROMELYPARAM* pParam) {
         [NSApplication sharedApplication];
 
         // Create the application delegate.
-        NSObject* appDelegate = [[ChromelyAppDelegate alloc] init];
+        ChromelyAppDelegate *appDelegate = [[ChromelyAppDelegate alloc] init];
         [appDelegate setParams:*pParam];
         [appDelegate performSelectorOnMainThread:@selector(createApplication:)
                                withObject:nil
@@ -368,12 +377,12 @@ void createwindow(CHROMELYPARAM* pParam) {
 }
 
 APPDATA createwindowdata(CHROMELYPARAM* pParam) {
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSApp = [NSApplication sharedApplication];
 
 
     // Create the application delegate.
-    NSObject* appDelegate = [[[ChromelyAppDelegate alloc] init] autorelease];
+    ChromelyAppDelegate *appDelegate = [[[ChromelyAppDelegate alloc] init] autorelease];
     NSLog(@"Created: appDelegate appDelegate:%@", appDelegate);
 
     [appDelegate setParams:*pParam];
@@ -392,18 +401,18 @@ APPDATA createwindowdata(CHROMELYPARAM* pParam) {
 }
 
 void run(void* application) {
-    [application run];
+    [(NSApplication *)application run];
 }
 
 void quit(void* application, void* pool) {
-    [pool release];       
-    [application performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
+    [(NSAutoreleasePool *)pool release];
+    [(NSApplication *)application performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
 }
 
 void minimize(void* view) {
-  [[view window] performMiniaturize:nil];
+  [[CAST_CEF_WINDOW_HANDLE_TO_NSVIEW(view) window] performMiniaturize:nil];
 }
 
 void maximize(void* view) {
-  [[view window] performZoom:nil];
+  [[CAST_CEF_WINDOW_HANDLE_TO_NSVIEW(view) window] performZoom:nil];
 }

@@ -102,6 +102,8 @@ public static class ResourceConstants
 public static class RequestConstants
 {
     public const string Referrer = "referrer";
+    public const string Header_Cookie = "Cookie";
+    public const string Header_ContentType = "Content-Type";
 }
 
 public static class ResponseConstants

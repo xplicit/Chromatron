@@ -4,6 +4,8 @@
 #nullable disable
 #pragma warning disable CA2016
 
+using System.Net.Http.Headers;
+
 namespace Chromely.Browser;
 
 /// <summary>
@@ -15,12 +17,12 @@ public class DefaultExternalRequestSchemeHandler : DefaultAsyncHandlerBase
     protected readonly HttpClient _httpClient;
     protected HttpRequestMessage _httpRequest;
     protected HttpResponseMessage _httpResponseMessage;
-    protected long _responseLenght;
+    protected long _responseLength;
 
     /// <summary>
     /// Initializes a new instance of the Chromely.CefGlue.Browser.Handlers.ExternalRequestSchemeHandler class.
     /// </summary>
-    /// <param name="httpClient">HttpClient object that will be used for requestes</param>
+    /// <param name="httpClient">HttpClient object that will be used for requests</param>
     public DefaultExternalRequestSchemeHandler(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -52,12 +54,34 @@ public class DefaultExternalRequestSchemeHandler : DefaultAsyncHandlerBase
     protected virtual HttpRequestMessage BuildHttpRequest(CefRequest cefRequest)
     {
         var httpRequest = new HttpRequestMessage(GetHttpMethod(cefRequest.Method), cefRequest.Url);
+
         var cefHeaders = cefRequest.GetHeaderMap();
         foreach (var key in cefHeaders.AllKeys)
+        {
             httpRequest.Headers.TryAddWithoutValidation(key, cefHeaders.GetValues(key));
+        }
+
+        // Should not be set as header, it is handled by CookieContainer
+        httpRequest.Headers.Remove(RequestConstants.Header_Cookie);
+
+        if (cefRequest.ReferrerURL is not null && Uri.TryCreate(cefRequest.ReferrerURL, UriKind.Absolute, out var referrerUri))
+        {
+            httpRequest.Headers.Referrer = referrerUri;
+        }
 
         if (cefRequest.PostData is not null && cefRequest.PostData.Count > 0)
-            httpRequest.Content = new StreamContent(new PostDataStream(cefRequest.PostData.GetElements()));
+        {
+            var postDataElements = cefRequest.PostData.GetElements();
+            var postDataStream = new PostDataStream(postDataElements);
+            httpRequest.Content = new StreamContent(postDataStream);
+
+            var contentType = cefRequest.GetHeaderByName(RequestConstants.Header_ContentType);
+            var mediaTypeHeaderValue = MediaTypeHeaderValue.Parse(contentType);
+            httpRequest.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
+
+            var contentLength = postDataElements.Sum(e => e.BytesCount);
+            httpRequest.Content.Headers.ContentLength = contentLength;
+        }
 
         return httpRequest;
     }
@@ -106,7 +130,7 @@ public class DefaultExternalRequestSchemeHandler : DefaultAsyncHandlerBase
             response.MimeType = _httpResponseMessage.Content?.Headers?.ContentType?.MediaType;
             response.Status = (int)_httpResponseMessage.StatusCode;
             response.StatusText = _httpResponseMessage.ReasonPhrase;
-            responseLength = this._responseLenght = _httpResponseMessage.Content?.Headers?.ContentLength ?? -1;
+            responseLength = this._responseLength = _httpResponseMessage.Content?.Headers?.ContentLength ?? -1;
 
             if (_httpResponseMessage.StatusCode == HttpStatusCode.MovedPermanently
                 || _httpResponseMessage.StatusCode == HttpStatusCode.Moved
@@ -147,7 +171,7 @@ public class DefaultExternalRequestSchemeHandler : DefaultAsyncHandlerBase
     /// <inheritdoc/>
     protected override long GetDataSize()
     {
-        return this._responseLenght;
+        return this._responseLength;
     }
 
     /// <inheritdoc/>

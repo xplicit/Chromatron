@@ -43,7 +43,7 @@ public class DefaultJavaScriptExecutor : IChromelyJavaScriptExecutor
         var frame = _browser?.GetMainFrame();
         if (frame is null)
         {
-            Logger.Instance.Log.LogWarning("Cannot accces main frame.");
+            Logger.Instance.Log.LogWarning("Cannot access main frame.");
             return string.Empty;
         }
 

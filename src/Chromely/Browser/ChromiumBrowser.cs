@@ -205,8 +205,11 @@ public abstract partial class ChromiumBrowser
     {
         Browser = browser;
 
-        // Register JavaScriptExecutor
-        _config.JavaScriptExecutor = new DefaultJavaScriptExecutor(browser);
+        // We do not want to re-register JavaScriptExecutor for popup windows
+        if (_config.JavaScriptExecutor == null)
+        {
+            _config.JavaScriptExecutor = new DefaultJavaScriptExecutor(browser);
+        }
 
         Created?.Invoke(this, EventArgs.Empty);
     }

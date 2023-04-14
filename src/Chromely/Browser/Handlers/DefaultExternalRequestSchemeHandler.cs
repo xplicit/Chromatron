@@ -43,6 +43,8 @@ public class DefaultExternalRequestSchemeHandler : DefaultAsyncHandlerBase
             "HEAD" => HttpMethod.Head,
             "OPTIONS" => HttpMethod.Options,
             "TRACE" => HttpMethod.Trace,
+            "PATCH" => new HttpMethod("PATCH"),
+            "CONNECT" => new HttpMethod("CONNECT"),
             _ => throw new ArgumentException($"Unknown http method: {methodName}"),
         };
     }

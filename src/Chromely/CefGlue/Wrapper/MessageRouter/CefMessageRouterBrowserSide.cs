@@ -1,6 +1,4 @@
-﻿#pragma warning disable IDE0060
-
-namespace Xilium.CefGlue.Wrapper
+﻿namespace Xilium.CefGlue.Wrapper
 {
     using System;
     using System.Collections.Generic;
@@ -156,14 +154,15 @@ namespace Xilium.CefGlue.Wrapper
 
         #endregion
 
+        private readonly CefMessageRouterConfig _config;
         private readonly string _queryMessageName;
         private readonly string _cancelMessageName;
 
-        private readonly List<Handler> _handlerSet = new(4); // TODO: use a HashSet, for .NET 3.5+
+        private readonly List<Handler> _handlerSet = new List<Handler>(4); // TODO: use a HashSet, for .NET 3.5+
 
-        private readonly BrowserInfoMap _browserQueryInfoMap = new();
+        private readonly BrowserInfoMap _browserQueryInfoMap = new BrowserInfoMap();
 
-        private readonly CefMessageRouter.IdGeneratorInt64 _queryIdGenerator = new();
+        private readonly CefMessageRouter.IdGeneratorInt64 _queryIdGenerator = new CefMessageRouter.IdGeneratorInt64();
 
         /// <summary>
         /// Create a new router with the specified configuration.
@@ -172,9 +171,19 @@ namespace Xilium.CefGlue.Wrapper
         {
             if (!config.Validate()) throw new ArgumentException("Invalid configuration.");
 
+            _config = config;
             _queryMessageName = config.JSQueryFunction + CefMessageRouter.MessageSuffix;
             _cancelMessageName = config.JSCancelFunction + CefMessageRouter.MessageSuffix;
         }
+
+        ~CefMessageRouterBrowserSide()
+        {
+            // There should be no pending queries when the router is deleted.
+            Debug.Assert(_browserQueryInfoMap.IsEmpty);
+        }
+
+        // TODO: Dispose method ?
+
 
         /// <summary>
         /// Create a new router with the specified configuration.
@@ -193,7 +202,7 @@ namespace Xilium.CefGlue.Wrapper
         /// </summary>
         public bool AddHandler(Handler handler, bool first = false)
         {
-            if (handler == null) throw new ArgumentNullException(nameof(handler));
+            if (handler == null) throw new ArgumentNullException("handler");
 
             Helpers.RequireUIThread();
 
@@ -214,7 +223,7 @@ namespace Xilium.CefGlue.Wrapper
         /// </summary>
         public bool RemoveHandler(Handler handler)
         {
-            if (handler == null) throw new ArgumentNullException(nameof(handler));
+            if (handler == null) throw new ArgumentNullException("handler");
 
             Helpers.RequireUIThread();
 
@@ -253,11 +262,11 @@ namespace Xilium.CefGlue.Wrapper
             if (handler != null)
             {
                 int count = 0;
-                bool visitor(int browserId, long key, QueryInfo value, ref bool remove)
+                BrowserInfoMap.Visitor visitor = (int browserId, long key, QueryInfo value, ref bool remove) =>
                 {
                     if (value.Handler == handler) count++;
                     return true;
-                }
+                };
 
                 if (browser != null)
                 {
@@ -459,11 +468,11 @@ namespace Xilium.CefGlue.Wrapper
         private QueryInfo GetQueryInfo(int browserId, long queryId, bool alwaysRemove, ref bool removed)
         {
             bool removedTemp = false;
-            bool visitor(int browserId_, long key, QueryInfo value, ref bool remove)
+            BrowserInfoMap.Visitor visitor = (int browserId_, long key, QueryInfo value, ref bool remove) =>
             {
                 remove = removedTemp = alwaysRemove || !value.Persistent;
                 return true;
-            }
+            };
             var info = _browserQueryInfoMap.Find(browserId, queryId, visitor);
             if (info != null) removed = removedTemp;
             return info;
@@ -580,7 +589,7 @@ namespace Xilium.CefGlue.Wrapper
 
             if (_browserQueryInfoMap.IsEmpty) return;
 
-            bool visitor(int browserId, long queryId, QueryInfo info, ref bool remove)
+            BrowserInfoMap.Visitor visitor = (int browserId, long queryId, QueryInfo info, ref bool remove) =>
             {
                 if (handler == null || info.Handler == handler)
                 {
@@ -589,7 +598,7 @@ namespace Xilium.CefGlue.Wrapper
                     info.Dispose();
                 }
                 return true;
-            }
+            };
 
             if (browser != null)
             {
@@ -607,7 +616,7 @@ namespace Xilium.CefGlue.Wrapper
         // kReservedId all requests associated with |context_id| will be canceled.
         private void CancelPendingRequest(int browserId, int contextId, int requestId)
         {
-            bool visitor(int vBrowserId, long queryId, QueryInfo info, ref bool remove)
+            BrowserInfoMap.Visitor visitor = (int vBrowserId, long queryId, QueryInfo info, ref bool remove) =>
             {
                 if (info.ContextId == contextId
                     && (requestId == CefMessageRouter.ReservedId || info.RequestId == requestId))
@@ -620,7 +629,7 @@ namespace Xilium.CefGlue.Wrapper
                     return requestId == CefMessageRouter.ReservedId;
                 }
                 return true;
-            }
+            };
 
             _browserQueryInfoMap.FindAll(browserId, visitor);
         }

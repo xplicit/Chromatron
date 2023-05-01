@@ -29,11 +29,11 @@ public class PathAndQuery
             return default;
         }
 
-        try
+        if (Uri.IsWellFormedUriString(requestUrl, UriKind.Absolute)
+            && Uri.TryCreate(requestUrl, UriKind.Absolute, out var result))
         {
-            return new Uri(requestUrl);
+            return result;
         }
-        catch { }
 
         try
         {

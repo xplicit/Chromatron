@@ -15,6 +15,10 @@ public static class ChromelyRuntime
     {
         try
         {
+            //TODO: rework this, make DI. Currently we have magic properties
+            //which must be handled with care when upgrading CefGlue.
+            //We should not depend on the CefGlue properties names
+            //nor library name
 #nullable disable
             var appExeLocation = AppDomain.CurrentDomain.BaseDirectory;
             string dllName = Path.Combine(appExeLocation, "Chromely.dll");

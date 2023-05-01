@@ -1,13 +1,25 @@
-Copy replace/overrwrite folder: https://gitlab.com/xiliumhq/chromiumembedded/cefglue/-/tree/master/CefGlue
+1. Copy replace/overrwrite folder: https://gitlab.com/xiliumhq/chromiumembedded/cefglue/-/tree/master/CefGlue
 with https://github.com/chromelyapps/Chromely/tree/master/src/Chromely/CefGlue.
 
-Delete:
-    File:    CefGlue.csproj
-    Folder:  Properties
+2. Delete:
+       Files:
+           CefGlue.csproj
+           CefGlue.g.props
+           Interop/Base/cef_string_t.disabled.cs
 
 The CEF binaries required will be at:
-       https://github.com/chromelyapps/Chromely/blob/3235514f0ba568663d05313c8f6cad9984470b55/src/Chromely/CefGlue/Interop/version.g.cs#L12
+       src/Chromely/CefGlue/Interop/version.g.cs#L12
 
+3. Update file src/Chromely/Loader/CefLoader.cs
+
+Change all occurrences of CEF version in `FindCefArchiveName()`
+
+4. Update file src/Chromely/CefRuntime.cs
+
+ Add property `CefVersion` before `ChromeVersion`
+```
+public static string CefVersion => libcef.CEF_VERSION;
+```
 
 ### Nuget package downloader
 

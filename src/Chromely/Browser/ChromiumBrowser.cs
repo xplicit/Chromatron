@@ -203,11 +203,10 @@ public abstract partial class ChromiumBrowser
     /// </param>
     public void OnBrowserAfterCreated(CefBrowser browser)
     {
-        Browser = browser;
-
-        // We do not want to re-register JavaScriptExecutor for popup windows
-        if (_config.JavaScriptExecutor == null)
+        // Consider first created browser window as an application window
+        if (Browser == null)
         {
+            Browser = browser;
             _config.JavaScriptExecutor = new DefaultJavaScriptExecutor(browser);
         }
 

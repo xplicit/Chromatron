@@ -311,7 +311,10 @@
         /// </summary>
         public static void SetOSModalLoop(bool osModalLoop)
         {
-            libcef.set_osmodal_loop(osModalLoop ? 1 : 0);
+            if (OperatingSystem.IsWindows())
+            {
+                libcef.set_osmodal_loop(osModalLoop ? 1 : 0);
+            }
         }
 
         /// <summary>
@@ -321,7 +324,10 @@
         /// </summary>
         public static void EnableHighDpiSupport()
         {
-            libcef.enable_highdpi_support();
+            if (OperatingSystem.IsWindows())
+            {
+                libcef.enable_highdpi_support();
+            }
         }
 
         #endregion

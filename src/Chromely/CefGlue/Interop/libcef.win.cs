@@ -9,17 +9,18 @@
 //
 namespace Xilium.CefGlue.Interop
 {
-    using System;
     using System.Runtime.InteropServices;
-    using System.Security;
+    using System.Runtime.Versioning;
 
     internal static unsafe partial class libcef
     {
         // CefSetOSModalLoop
+        [SupportedOSPlatform("windows")]
         [DllImport(DllName, EntryPoint = "cef_set_osmodal_loop", CallingConvention = libcef.CEF_CALL)]
         public static extern void set_osmodal_loop(int osModalLoop);
 
         // CefEnableHighDPISupport
+        [SupportedOSPlatform("windows")]
         [DllImport(DllName, EntryPoint = "cef_enable_highdpi_support", CallingConvention = libcef.CEF_CALL)]
         public static extern void enable_highdpi_support();
     }

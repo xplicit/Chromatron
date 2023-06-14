@@ -1,17 +1,15 @@
-﻿#pragma warning disable CS8714
-
-namespace Xilium.CefGlue.Wrapper
+﻿namespace Xilium.CefGlue.Wrapper
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
 
     // Maps an arbitrary TId to an arbitrary TObject on a per-browser basis.
-    internal sealed class CefBrowserInfoMap<TKey, TValue>
+    internal sealed class CefBrowserInfoMap<TKey, TValue> where TKey : notnull
     {
         public delegate bool Visitor(int browserId, TKey key, TValue value, ref bool remove);
 
-        private readonly Dictionary<int, Dictionary<TKey, TValue>> _map = new();
+        private Dictionary<int, Dictionary<TKey, TValue>> _map = new Dictionary<int, Dictionary<TKey, TValue>>();
 
         public CefBrowserInfoMap()
         {
@@ -37,13 +35,16 @@ namespace Xilium.CefGlue.Wrapper
 
         public int Count(int browserId)
         {
-            return _map.TryGetValue(browserId, out Dictionary<TKey, TValue> v) ? v.Count : 0;
+            Dictionary<TKey, TValue> v;
+            if (_map.TryGetValue(browserId, out v)) return v.Count;
+            else return 0;
         }
 
 
         public void Add(int browserId, TKey key, TValue value)
         {
-            if (!_map.TryGetValue(browserId, out Dictionary<TKey, TValue> v))
+            Dictionary<TKey, TValue> v;
+            if (!_map.TryGetValue(browserId, out v))
             {
                 v = new Dictionary<TKey, TValue>();
                 _map.Add(browserId, v);
@@ -54,12 +55,14 @@ namespace Xilium.CefGlue.Wrapper
 
         public TValue Find(int browserId, TKey key, Visitor visitor)
         {
-            if (!_map.TryGetValue(browserId, out Dictionary<TKey, TValue> v))
+            Dictionary<TKey, TValue> v;
+            if (!_map.TryGetValue(browserId, out v))
             {
-                return default;
+                return default(TValue);
             }
 
-            if (v.TryGetValue(key, out TValue x))
+            TValue x;
+            if (v.TryGetValue(key, out x))
             {
                 bool remove = false;
                 visitor(browserId, key, x, ref remove);
@@ -69,18 +72,16 @@ namespace Xilium.CefGlue.Wrapper
                 }
                 return x;
             }
-            else return default;
+            else return default(TValue);
         }
 
         public void FindAll(int browserId, Visitor visitor)
         {
-            if (!_map.TryGetValue(browserId, out Dictionary<TKey, TValue> v))
-            {
-                return;
-            }
+            Dictionary<TKey, TValue> v;
+            if (!_map.TryGetValue(browserId, out v)) return;
 
             bool hasRemoveKey = false;
-            TKey removeKey = default;
+            TKey removeKey = default(TKey);
             List<TKey> removeList = null;
             foreach (var kv in v)
             {

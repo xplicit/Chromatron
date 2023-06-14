@@ -28,7 +28,7 @@ public class DefaultRenderProcessHandler : CefRenderProcessHandler
     /// <inheritdoc/>
     protected override void OnContextCreated(CefBrowser browser, CefFrame frame, CefV8Context context)
     {
-        MessageRouter.OnContextCreated(context);
+        MessageRouter.OnContextCreated(browser, frame, context);
 
         // MessageRouter.OnContextCreated doesn't capture CefV8Context immediately,
         // so we able to release it immediately in this call.

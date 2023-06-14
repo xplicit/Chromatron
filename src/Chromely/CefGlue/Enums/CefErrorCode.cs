@@ -166,7 +166,7 @@ namespace Xilium.CefGlue
         /// <summary>
         /// The request failed because the response was delivered along with requirements
         /// which are not met ('X-Frame-Options' and 'Content-Security-Policy' ancestor
-        /// checks and 'Cross-Origin-Resource-Policy', for instance).
+        /// checks and 'Cross-Origin-Resource-Policy' for instance).
         /// </summary>
         BLOCKED_BY_RESPONSE = -27,
 
@@ -187,6 +187,11 @@ namespace Xilium.CefGlue
         /// The request was blocked because of no H/2 or QUIC session.
         /// </summary>
         H2_OR_QUIC_REQUIRED = -31,
+
+        /// <summary>
+        /// The request was blocked by CORB or ORB.
+        /// </summary>
+        BLOCKED_BY_ORB = -32,
 
         /// <summary>
         /// A connection was closed (corresponding to a TCP FIN).
@@ -740,7 +745,7 @@ namespace Xilium.CefGlue
         /// </summary>
         CERT_WEAK_SIGNATURE_ALGORITHM = -208,
 
-        // -209 is availible: was CERT_NOT_IN_DNS.
+        // -209 is available: was CERT_NOT_IN_DNS.
 
         /// <summary>
         /// The host name specified in the certificate is not unique.
@@ -1033,7 +1038,7 @@ namespace Xilium.CefGlue
         RESPONSE_HEADERS_TRUNCATED = -357,
 
         /// <summary>
-        /// The QUIC crytpo handshake failed.  This means that the server was unable
+        /// The QUIC crypto handshake failed.  This means that the server was unable
         /// to read any requests sent, so they may be resent.
         /// </summary>
         QUIC_HANDSHAKE_FAILED = -358,
@@ -1168,6 +1173,19 @@ namespace Xilium.CefGlue
         TOO_MANY_ACCEPT_CH_RESTARTS = -382,
 
         /// <summary>
+        /// The IP address space of the remote endpoint differed from the previous
+        /// observed value during the same request. Any cache entry for the affected
+        /// request should be invalidated.
+        /// </summary>
+        INCONSISTENT_IP_ADDRESS_SPACE = -383,
+
+        /// <summary>
+        /// The IP address space of the cached remote endpoint is blocked by private
+        /// network access check.
+        /// </summary>
+        CACHED_IP_ADDRESS_SPACE_BLOCKED_BY_PRIVATE_NETWORK_ACCESS_POLICY = -384,
+
+        /// <summary>
         /// The cache does not have the requested entry.
         /// </summary>
         CACHE_MISS = -400,
@@ -1233,7 +1251,7 @@ namespace Xilium.CefGlue
 
         /// <summary>
         /// Internal not-quite error code for the HTTP cache. In-memory hints suggest
-        /// that the cache entry would not have been useable with the transaction's
+        /// that the cache entry would not have been usable with the transaction's
         /// current configuration (e.g. load flags, mode, etc.)
         /// </summary>
         CACHE_ENTRY_NOT_SUITABLE = -411,
@@ -1473,6 +1491,12 @@ namespace Xilium.CefGlue
         /// All DNS requests associated with this job have been cancelled.
         /// </summary>
         DNS_REQUEST_CANCELLED = -810,
+
+        /// <summary>
+        /// The hostname resolution of HTTPS record was expected to be resolved with
+        /// alpn values of supported protocols, but did not.
+        /// </summary>
+        DNS_NO_MACHING_SUPPORTED_ALPN = -811,
 
         // CefGlue backward compatiblity.
         // Generally we prefer .NET naming rules, but will care about later.

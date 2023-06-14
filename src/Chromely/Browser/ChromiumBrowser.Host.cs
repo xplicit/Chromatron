@@ -126,9 +126,9 @@ public abstract partial class ChromiumBrowser
     /// dismissed or immediately if another dialog is already pending. The dialog
     /// will be initiated asynchronously on the UI thread.
     /// </summary>
-    public void RunFileDialog(CefFileDialogMode mode, string title, string defaultFilePath, string[] acceptFilters, int selectedAcceptFilter, CefRunFileDialogCallback callback)
+    public void RunFileDialog(CefFileDialogMode mode, string title, string defaultFilePath, string[] acceptFilters, CefRunFileDialogCallback callback)
     {
-        BrowserHost?.RunFileDialog(mode, title, defaultFilePath, acceptFilters, selectedAcceptFilter, callback);
+        BrowserHost?.RunFileDialog(mode, title, defaultFilePath, acceptFilters, callback);
     }
 
     /// <summary>

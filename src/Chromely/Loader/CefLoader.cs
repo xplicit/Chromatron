@@ -163,26 +163,22 @@ public class CefLoader
                 return found.Groups[1].Value;
             }
 
-            #region https://github.com/chromelyapps/Chromely/issues/257
-
             // Hack until fixed.
             if (!string.IsNullOrEmpty(binaryNamePattern1))
             {
-                if (binaryNamePattern1.Contains("101.0.4951.54"))
+                if (binaryNamePattern1.Contains("108.0.5359.125"))
                 {
-                    return $"cef_binary_101.0.15%2Bgca159c5%2Bchromium-101.0.4951.54_{platformIdentifier}_minimal.tar.bz2";
+                    return $"cef_binary_108.4.13%2Bga98cd4c%2Bchromium-108.0.5359.125_{platformIdentifier}_minimal.tar.bz2";
                 }
             }
 
             if (!string.IsNullOrEmpty(binaryNamePattern2))
             {
-                if (binaryNamePattern2.Contains("101.0.4951.54"))
+                if (binaryNamePattern2.Contains("108.0.5359.125"))
                 {
-                    return $"cef_binary_101.0.15%2Bgca159c5%2Bchromium-101.0.4951.54_{platformIdentifier}_minimal.tar.bz2";
+                    return $"cef_binary_108.4.13%2Bga98cd4c%2Bchromium-108.0.5359.125_{platformIdentifier}_minimal.tar.bz2";
                 }
             }
-
-            #endregion Hack until fixed.
 
             var message = $"CEF for chrome version {CefRuntime.ChromeVersion} platform {platformIdentifier} not found.";
             Logger.Instance.Log.LogError("CefLoader: {message}", message);

@@ -78,11 +78,11 @@ public class DefaultExternalRequestSchemeHandler : DefaultAsyncHandlerBase
             httpRequest.Content = new StreamContent(postDataStream);
 
             var contentType = cefRequest.GetHeaderByName(RequestConstants.Header_ContentType);
-            var mediaTypeHeaderValue = MediaTypeHeaderValue.Parse(contentType);
-            httpRequest.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
-
-            var contentLength = postDataElements.Sum(e => e.BytesCount);
-            httpRequest.Content.Headers.ContentLength = contentLength;
+            if (MediaTypeHeaderValue.TryParse(contentType, out var mediaTypeHeaderValue))
+            {
+                httpRequest.Content.Headers.ContentType = mediaTypeHeaderValue;
+                httpRequest.Content.Headers.ContentLength = postDataElements.Sum(e => e.BytesCount);
+            }
         }
 
         return httpRequest;

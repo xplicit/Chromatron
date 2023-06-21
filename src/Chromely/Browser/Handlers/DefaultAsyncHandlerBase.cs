@@ -249,7 +249,7 @@ public abstract class DefaultAsyncHandlerBase : CefResourceHandler, IDisposable
     /// <inheritdoc/>
     protected override bool Skip(long bytesToSkip, out long bytesSkipped, CefResourceSkipCallback callback)
     {
-        bytesSkipped = 0;
+        bytesSkipped = bytesToSkip;
         return true;
     }
 

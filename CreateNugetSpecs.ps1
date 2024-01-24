@@ -1,6 +1,6 @@
 
 Param(
-    [string]$TemplatesPath = "Chromely-Win\Artifacts"
+    [string]$TemplatesPath = "Chromatron-Win\Artifacts"
 )
 
 Get-ChildItem $TemplatesPath -Filter *.nuspec | 

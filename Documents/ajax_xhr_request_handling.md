@@ -3,7 +3,7 @@
 
 This is info about registering handlers for [CEF Request Handling](https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage#markdown-header-scheme-handler).
 
-Chromely supports CEF3 network request handling via the scheme handling approach. This allows for Ajax XMLHttpRequest (XHR) request handling. 
+Chromatron supports CEF3 network request handling via the scheme handling approach. This allows for Ajax XMLHttpRequest (XHR) request handling. 
 
 A custom scheme handler would require:
 1. The scheme name - HTTP, HTTPS and custom schemes

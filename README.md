@@ -1,26 +1,26 @@
-<p align="center"><img src="https://github.com/xplicit/Chromely/blob/master/nugets/chromely.ico?raw=true" /></p>
-<h1 align="center">Chromely</h1>
+<p align="center"><img src="https://github.com/xplicit/Chromatron/blob/master/nugets/chromatron.ico?raw=true" /></p>
+<h1 align="center">Chromatron</h1>
 
 <br />
 
-For developers who are interested in [WebView2](https://docs.microsoft.com/en-us/microsoft-edge/webview2/) there is [EdgeSharp](https://github.com/edgesharp/EdgeSharp), an offshoot of Chromely.
+For developers who are interested in [WebView2](https://docs.microsoft.com/en-us/microsoft-edge/webview2/) there is [EdgeSharp](https://github.com/edgesharp/EdgeSharp), an offshoot of Chromatron.
 
-Chromely is a lightweight alternative to <a href="https://github.com/ElectronNET/Electron.NET">Electron.NET</a>, <a href="https://github.com/electron/electron">Electron</a> for .NET/.NET Core developers.
+Chromatron is a lightweight alternative to <a href="https://github.com/ElectronNET/Electron.NET">Electron.NET</a>, <a href="https://github.com/electron/electron">Electron</a> for .NET/.NET Core developers.
 
-Chromely is a .NET/.NET Core HTML5 Chromium desktop framework. It is focused on building apps based on [Xilium.CefGlue](https://gitlab.com/xiliumhq/chromiumembedded/cefglue), [CefSharp](https://github.com/chromelyapps/CefSharp) implementations of  embedded Chromium ([CEF](https://bitbucket.org/chromiumembedded/cef)) **without WinForms or WPF**, but can be extended to use WinForms or WPF. Chromely uses **Windows**, **Linux** and **MacOS** native GUI API as "thin" chromium hosts.
+Chromatron is a .NET/.NET Core HTML5 Chromium desktop framework. It is focused on building apps based on [Xilium.CefGlue](https://gitlab.com/xiliumhq/chromiumembedded/cefglue), [CefSharp](https://github.com/chromelyapps/CefSharp) implementations of  embedded Chromium ([CEF](https://bitbucket.org/chromiumembedded/cef)) **without WinForms or WPF**, but can be extended to use WinForms or WPF. Chromatron uses **Windows**, **Linux** and **MacOS** native GUI API as "thin" chromium hosts.
 
-With Chromely you can build Single Page Application (SPA) HTML5 desktop apps with or without Node/npm. Building SPA apps using Blazor or javascript frameworks like Angular, React, Vue or similar is easy. You can use Visual Studio Code or any IDE you are familiar with as long as Chromely knows the entry html file from the compiled/bundled files. For more info please see - [Blazor-Demos](https://github.com/chromelyapps/demo-projects/tree/master/blazor) and [Chromely-Apps](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue).
+With Chromatron you can build Single Page Application (SPA) HTML5 desktop apps with or without Node/npm. Building SPA apps using Blazor or javascript frameworks like Angular, React, Vue or similar is easy. You can use Visual Studio Code or any IDE you are familiar with as long as Chromatron knows the entry html file from the compiled/bundled files. For more info please see - [Blazor-Demos](https://github.com/chromelyapps/demo-projects/tree/master/blazor) and [Chromatron-Apps](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue).
 
 Options of communicating (IPC) with rendering process are via:
 
-- Generic Message Routing - more info @ [Generic Message Routing](https://github.com/chromelyapps/Chromely/blob/master/Documents/generic_message_routing.md).
-- Ajax HTTP/XHR -  more info @ [Custom Scheme Handling](https://github.com/chromelyapps/Chromely/blob/master/Documents/ajax_xhr_request_handling.md).
+- Generic Message Routing - more info @ [Generic Message Routing](https://github.com/xplicit/Chromatron/blob/master/Documents/generic_message_routing.md).
+- Ajax HTTP/XHR -  more info @ [Custom Scheme Handling](https://github.com/xplicit/Chromatron/blob/master/Documents/ajax_xhr_request_handling.md).
 
-##### If you like Chromely, please give it a star - it helps! #####
+##### If you like Chromatron, please give it a star - it helps! #####
 
 Have a quick question? Wanna chat? Connect on  [![Join the chat at https://gitter.im/chromely_/Lobby](https://badges.gitter.im/chromely_/Lobby.svg)](https://gitter.im/chromely_/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Have an app/project/tool using Chromely - [please share!](https://github.com/chromelyapps/Chromely/issues/63)
+Have an app/project/tool using Chromatron - [please share!](https://github.com/xplicit/Chromatron/issues/63)
 
 ### Platforms
 Cross-platform -**Windows**, **Linux**, **MacOS**. Built on CEF, CefGlue, NET Standard 2.0, .NET Core 3.0, .NET Framework 4.61 and above.
@@ -39,7 +39,7 @@ Cross-platform -**Windows**, **Linux**, **MacOS**. Built on CEF, CefGlue, NET St
 &nbsp;<sup>(4)</sup>&nbsp; i.e. Raspberry Pi 3+   (starting with v5.x)    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(for v4.x - manual download of CEF builds for ARM required,  available on http://chromely.org/cefbuilds/index.html) 
 
-[![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.Core.svg?style=flat&label=Chromely.Core)](https://www.nuget.org/packages/Chromely.Core)
+[![Chromatron.Core](http://img.shields.io/nuget/vpre/Chromatron.Core.svg?style=flat&label=Chromely.Core)](https://www.nuget.org/packages/Chromely.Core)
 [![Chromely](http://img.shields.io/nuget/vpre/Chromely.svg?style=flat&label=Chromely)](https://www.nuget.org/packages/Chromely)
 [![Chromely.Owin](http://img.shields.io/nuget/vpre/Chromely.Owin.svg?style=flat&label=Chromely.Owin)](https://www.nuget.org/packages/Chromely.Owin)
 

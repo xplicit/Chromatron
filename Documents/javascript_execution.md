@@ -1,7 +1,7 @@
 
 # JavaScript Execution
 
-Chromely allows JavaScript execution in C# code via implementaion of [IChromelyJavaScriptExecutor](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyJavaScriptExecutor.cs). A [default implementation](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/Browser/Handlers/DefaultJavaScriptExecutor.cs) is provided but this is can be changed via registration of a custom executor.
+Chromatron allows JavaScript execution in C# code via implementaion of [IChromatronJavaScriptExecutor](https://github.com/xplicit/Chromatron/blob/master/src/Chromatron.Core/IChromatronJavaScriptExecutor.cs). A [default implementation](https://github.com/xplicit/Chromatron/blob/master/src/Chromatron/Browser/Handlers/DefaultJavaScriptExecutor.cs) is provided but this is can be changed via registration of a custom executor.
 
 For sample execution see - [JavaScript Execution](https://github.com/chromelyapps/demo-projects/blob/cbb0eb2e930285d28813bbb3e60cc110de68ea0a/regular-chromely/CrossPlatDemo/Controllers/ExecuteJavaScriptDemoController.cs#L57).
 
@@ -11,7 +11,7 @@ To register a custom exeuctor:
     var config = DefaultConfiguration.CreateForRuntimePlatform();
     config.JavaScriptExecutor  = new CustomJavaScriptExecutor();
 
-    public class CustomJavaScriptExecutor : IChromelyJavaScriptExecutor
+    public class CustomJavaScriptExecutor : IChromatronJavaScriptExecutor
     {
     }
 

@@ -1,7 +1,7 @@
 
 # Registering Url Schemes
 
-Chromely centralizes and control all url requests via a url scheme. A registered url determines what Chromely does with it. An unregistered scheme will follow default behavior or a behavior pre-programmed by the developer. 
+Chromatron centralizes and control all url requests via a url scheme. A registered url determines what Chromatron does with it. An unregistered scheme will follow default behavior or a behavior pre-programmed by the developer. 
 
 There are [4 types](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Infrastructure/UrlSchemeType.cs) of schemes
 - Resource

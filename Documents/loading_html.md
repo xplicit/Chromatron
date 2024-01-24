@@ -1,7 +1,7 @@
 
 # Loading Html
 
-Chromely html loading (start url) can be done in [3 different](https://github.com/chromelyapps/Chromely/blob/5086087dfc03d27cbd84699359cd4891024cfcd1/src/Chromely.Core/Helpers/ConfigKeys.cs#L3) ways.
+Chromatron html loading (start url) can be done in [3 different](https://github.com/xplicit/Chromatron/blob/5086087dfc03d27cbd84699359cd4891024cfcd1/src/Chromatron.Core/Helpers/ConfigKeys.cs#L3) ways.
 
 - A real website URL
 - Local/Embedded Resource Loading
@@ -9,14 +9,14 @@ Chromely html loading (start url) can be done in [3 different](https://github.co
 
 ## A Real Website URL
 
-This will launch actual website URL. This may not necessarily be commonly used as Chromely is focused on loading local HTML5 files for Single Page Applications (SPAs). This URL should also be of scheme and domain combination that is not registered as external URL scheme. 
+This will launch actual website URL. This may not necessarily be commonly used as Chromatron is focused on loading local HTML5 files for Single Page Applications (SPAs). This URL should also be of scheme and domain combination that is not registered as external URL scheme. 
 
-If the URL is pre-regisered as an external url scheme type, the URL will be opened by the OS default browser. Please see more info at [Registering Url Schemes](https://github.com/chromelyapps/Chromely/blob/master/Documents/registering_url_schemes.md).
+If the URL is pre-regisered as an external url scheme type, the URL will be opened by the OS default browser. Please see more info at [Registering Url Schemes](https://github.com/xplicit/Chromatron/blob/master/Documents/registering_url_schemes.md).
 
 To load/start url and its assets, you can do it in configuration object:
 
 ````csharp
-    public class DefaultConfiguration : IChromelyConfiguration
+    public class DefaultConfiguration : IChromatronConfiguration
     {
         public DefaultConfiguration()
         {
@@ -29,13 +29,13 @@ To load/start url and its assets, you can do it in configuration object:
 
 This is the preferred way of loading local HTML5 files. 
 
-Loading html and associated files via LocalResource needs a custom resource scheme handler. For more info on scheme handling, please see [Registering Resource Handlers](https://github.com/chromelyapps/Chromely/blob/master/Documents/registering_resource_handlers.md).
+Loading html and associated files via LocalResource needs a custom resource scheme handler. For more info on scheme handling, please see [Registering Resource Handlers](https://github.com/xplicit/Chromatron/blob/master/Documents/registering_resource_handlers.md).
 
 To load start url and its assets, you can do it in configuration object:
 
 
 ````csharp
-    public class DefaultConfiguration : IChromelyConfiguration
+    public class DefaultConfiguration : IChromatronConfiguration
     {
         public DefaultConfiguration()
         {

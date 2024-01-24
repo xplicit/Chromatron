@@ -4,8 +4,8 @@
 // include the Cocoa Frameworks
 #import <Cocoa/Cocoa.h>         
 
-// include Chromely custom header
-#include "chromely_mac.h"
+// include Chromatron custom header
+#include "chromatron_mac.h"
 
 
 void initCallback(void *app, void *pool) {
@@ -30,7 +30,7 @@ void quitCallback() {
 
 
 int main(int argc, char * argv[]) {
-    CHROMELYPARAM temp;
+    CHROMATRONPARAM temp;
     temp.initCallback = initCallback;
     temp.createCallback = createCallback;
     temp.movingCallback = movingCallback;
@@ -44,7 +44,7 @@ int main(int argc, char * argv[]) {
     //temp.nominbutton = 1;
     //temp.nomaxbutton = 1;
 
-    memcpy(temp.title, "chromely", 8);
+    memcpy(temp.title, "chromatron", 8);
 
     temp.x = 0;
     temp.y = 0;

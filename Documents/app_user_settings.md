@@ -1,10 +1,10 @@
 
 # App/User Settings
 
-Chromely provides storing and retrieval of application/user preferences settings.
-Developers can provide a custom settings class, but the class must implement [IChromelyAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyAppSettings.cs). If none is provided it uses the default - [DefaultAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Defaults/DefaultAppSettings.cs).
+Chromatron provides storing and retrieval of application/user preferences settings.
+Developers can provide a custom settings class, but the class must implement [IChromatronAppSettings](https://github.com/xplicit/Chromatron/blob/master/src/Chromatron.Core/IChromatronAppSettings.cs). If none is provided it uses the default - [DefaultAppSettings](https://github.com/xplicit/Chromatron/blob/master/src/Chromatron.Core/Defaults/DefaultAppSettings.cs).
 
-The default implementation of [IChromelyAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyAppSettings.cs) has the following features:
+The default implementation of [IChromatronAppSettings](https://github.com/xplicit/Chromatron/blob/master/src/Chromely.Core/IChromelyAppSettings.cs) has the following features:
 
 - Property - AppName
     - Current application name

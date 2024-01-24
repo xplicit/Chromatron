@@ -1,7 +1,7 @@
 
-# Chromely on Raspberry Pi
+# Chromatron on Raspberry Pi
 
-From Chromely version v5 up we support Raspberry Pi's **linux-arm** as target platform.
+Chromatron supports Raspberry Pi's **linux-arm** as target platform.
 
 To publish for this platform use the following command.
 
@@ -15,5 +15,5 @@ It will create a single file executable for Raspberry Pi use.
 The download and unpack process on the PI is slow and may take several minutes - be patient.
 
 
-![Chromely on Raspberrry Pi](../Screenshots/chromely_raspi.png)
+![Chromatron on Raspberrry Pi](../Screenshots/chromely_raspi.png)
 

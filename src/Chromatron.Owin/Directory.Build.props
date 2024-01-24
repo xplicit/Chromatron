@@ -1,0 +1,29 @@
+﻿<Project>
+	<PropertyGroup>
+		<ProductVersion>1.0.0.108</ProductVersion>
+		<AssemblyVersion>1.0.0.108</AssemblyVersion>
+		<FileVersion>1.0.0.108</FileVersion>
+		<Version>1.0.0.108</Version>
+		<Product>Chromatron.Core.Owin</Product>
+		<Owners>Greeana LLC</Owners>
+		<Authors>Greeana LLC</Authors>
+		<Company>Greeana LLC</Company>
+		<PackageTags>CEF Chromium HTML5 Desktop Chromatron CefGlue CefSharp .NET 6 Owin AspNetCore</PackageTags>
+		<Description>The base/core library required to build Chromatron Owin/AspNetCore applications.</Description>
+		<Copyright>Copyright © 2024 Greeana LLC</Copyright>
+		<PackageProjectUrl>https://github.com/xplicit/Chromatron</PackageProjectUrl>
+		<PackageIcon>chromatron.png</PackageIcon>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>
+			- Initial public release
+			- Support of CefGlue/Chromium v108.
+		</PackageReleaseNotes>
+		<RepositoryUrl>https://github.com/xplicit/Chromatron</RepositoryUrl>
+		<RepositoryType>Github Repository</RepositoryType>
+		<Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+
+</Project>

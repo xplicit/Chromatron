@@ -1,0 +1,25 @@
+﻿// Copyright © 2024 Greeana LLC. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+namespace Chromatron.Core.Configuration;
+
+/// <summary>
+/// CEF download options.
+/// </summary>
+public interface ICefDownloadOptions
+{
+    /// <summary>
+    /// Gets or sets a value indicating whether CEF binaries should automatically be downloaded when missing.
+    /// </summary>
+    bool AutoDownloadWhenMissing { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether CEF binaries should be downloaded silently.
+    /// </summary>
+    bool DownloadSilently { get; set; }
+
+    /// <summary>
+    /// Gets or sets the binaries download notification type.
+    /// </summary>
+    CefDownloadNotificationType NotificationType { get; set; }
+}

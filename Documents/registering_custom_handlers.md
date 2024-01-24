@@ -3,7 +3,7 @@
 
 All CEF/CefGlue handlers can be configured.
 
-Custom handlers can be registered in [ChromelyApp](https://github.com/chromelyapps/Chromely/blob/f147ba0f7a3a9b18dbc8d6de1598eee1b0644d0b/src/Chromely.Core/ChromelyApp.cs#L113) Configure method.
+Custom handlers can be registered in [ChromatronApp](https://github.com/chromelyapps/Chromely/blob/f147ba0f7a3a9b18dbc8d6de1598eee1b0644d0b/src/Chromely.Core/ChromelyApp.cs#L113) Configure method.
 
 The following handlers can be customized and registered:
 

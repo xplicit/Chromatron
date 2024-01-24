@@ -1,15 +1,15 @@
-Building and Testing libchromely.dylib
+Building and Testing libchromatron.dylib
 -------------------------------------------------
-g++ -dynamiclib -finput-charset=UTF-8 -framework Cocoa -x objective-c++ -current_version 1.0 -I./ -o libchromely.dylib chromely_mac.mm
+g++ -dynamiclib -finput-charset=UTF-8 -framework Cocoa -x objective-c++ -current_version 1.0 -I./ -o libchromatron.dylib chromatron_mac.mm
 
 Check build:
-file  libchromely.dylib
+file  libchromatron.dylib
 
 build demo -
 ---------------
-g++ -v -framework Cocoa -x objective-c++ -L. -lchromely -o demo main.mm
+g++ -v -framework Cocoa -x objective-c++ -L. -lchromatron -o demo main.mm
 
-Note that -lchromely is short for libchromely.dylib
+Note that -lchromatron is short for libchromatron.dylib
 
 run demo
 -----------------

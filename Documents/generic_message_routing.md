@@ -19,33 +19,33 @@ The generic message router functions in UI are in the following formats:
 // Optionally cancel the query.
 window.cefQueryCancel(request_id)
 ````
-For Chromely CefGlue message routing, the following must be done:
+For Chromatron CefGlue message routing, the following must be done:
 - Use default message router handler or register a new one.
 - Add appropriate cefQuery Javascript function in the UI.
 - Add C# Controller/Action functionality to handle requests.
 
 #### Register Message Router Handler
-To use the [default handler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/Browser/Handlers/DefaultMessageRouterHandler.cs) nothing needs to be done. 
+To use the [default handler](https://github.com/xplicit/Chromatron/blob/master/src/Chromatron/Browser/Handlers/DefaultMessageRouterHandler.cs) nothing needs to be done. 
 
 For custom handlers, developers need to register one:
 
 ````csharp
-    public class CusomChromelyApp : ChromelyBasicApp
+    public class CustomChromatronApp : ChromatronBasicApp
     {
           public override void ConfigureServices(ServiceCollection services)
         {
             base.ConfigureServices(services);
-            services.AddSingleton<IChromelyMessageRouter, CustomMessageRouter>();
+            services.AddSingleton<IChromatronMessageRouter, CustomMessageRouter>();
         }
     }
 
-    public class CustomMessageRouter : IChromelyMessageRouter
+    public class CustomMessageRouter : IChromatronMessageRouter
     {
     }
 ````
 
 
-Chromely default message route handling only implements cefQuery. To implement cefQueryCancel a new handler must be implemented and registered.
+Chromatron default message route handling only implements cefQuery. To implement cefQueryCancel a new handler must be implemented and registered.
 
 The default handler expects the request to be in the following format:
 ````javascript
@@ -94,13 +94,13 @@ Where:
 #### C# Controller/Action
 A sample Controller
 ````charp
-    public class MovieController : ChromelyController
+    public class MovieController : ChromatronController
     {
         public MovieController()
         {
         }
 		
-        [ChromelyRoute(Path = "/democontroller/movies/get")]
+        [ChromatronRoute(Path = "/democontroller/movies/get")]
         public List<MovieInfo> GetMovies()
         {
 		    return new List<MovieInfo>();

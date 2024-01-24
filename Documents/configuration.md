@@ -1,6 +1,6 @@
-# Chromely Configuration
+# Chromatron Configuration
 
-Chromely configuration is equivalent to Desktop App.config or Web project Web.config/appsettings.config. Most required CEF/Chromely configurations are done via [IChromelyConfiguration](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/IChromelyConfiguration.cs) implementation. Configuration provides default values that can be used as-is or with new/custom properties set. 
+Chromatron configuration is equivalent to Desktop App.config or Web project Web.config/appsettings.config. Most required CEF/Chromatron configurations are done via [IChromatronConfiguration](https://github.com/xplicit/Chromatron/blob/master/src/Chromatron.Core/Configuration/IChromelyConfiguration.cs) implementation. Configuration provides default values that can be used as-is or with new/custom properties set. 
 
 To create Chromely application, the Configuration class is not required. A custom configuration class must implement - [IChromelyConfiguration](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/IChromelyConfiguration.cs). 
 

@@ -9,7 +9,7 @@
 
 ## DevTools On Windows
 
-On Windows, if debug mode is enabled, Chromely provides 2 command context menu items:
+On Windows, if debug mode is enabled, Chromatron provides 2 command context menu items:
 - Show DevTools
     - Launches Chromium in-built DevTool window.
 - Close DevTools
@@ -29,7 +29,7 @@ Debug mode in config code:
     config.DebuggingMode = true;
 ````
 
-The context menu is provided via CEF/CefGlue's [ContextMenuHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/CefGlue/Classes.Handlers/CefContextMenuHandler.cs). Chromely provides a [default implementation of ContextMenuHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/Browser/Handlers/DefaultContextMenuHandler.cs) but it is configurable.
+The context menu is provided via CEF/CefGlue's [ContextMenuHandler](https://github.com/xplicit/Chromatron/blob/master/src/Chromatron/CefGlue/Classes.Handlers/CefContextMenuHandler.cs). Chromatron provides a [default implementation of ContextMenuHandler](https://github.com/xplicit/Chromatron/blob/master/src/Chromatron/Browser/Handlers/DefaultContextMenuHandler.cs) but it is configurable.
 
 To conigure the DevTools menu, register a new custom ContextMenuHandler:
 

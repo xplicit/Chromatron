@@ -5,14 +5,14 @@ Note: This description is for 64-bit. The guide will also work for 32-bit - the 
 CEF binaries are automatically downloaded for Windows builds for Nuget packages. For all platforms (Windows, Linux, MacOS, binaries are downloaded at runtime if configured to do so by the developer. 
 
 
-#### [CEF Download Options](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/ICefDownloadOptions.cs)
+#### [CEF Download Options](https://github.com/xplicit/Chromatron/blob/master/src/Chromatron.Core/Configuration/ICefDownloadOptions.cs)
 | Option| Description | 
 | :---         | :---         | 
 | AutoDownloadWhenMissing  | If set to "true", CEF binaries will be downloaded if missing.| 
 | DownloadSilently  | If set to "true", no notification will be provided during CEF binaries download.| 
-| NotificationType   | The notification type of [CefDownloadNotificationType](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/CefDownloadNotificationType.cs)| 
+| NotificationType   | The notification type of [CefDownloadNotificationType](https://github.com/xplicit/Chromatron/blob/master/src/Chromatron.Core/Configuration/CefDownloadNotificationType.cs)| 
 
-#### [CEF Download Notification Types](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/CefDownloadNotificationType.cs)
+#### [CEF Download Notification Types](https://github.com/xplicit/Chromatron/blob/master/src/Chromatron.Core/Configuration/CefDownloadNotificationType.cs)
 | CEF Notification Type| Description | 
 | :---         | :---         | 
 | Logger | Logs notification messages to the Logger as set by the application. | 

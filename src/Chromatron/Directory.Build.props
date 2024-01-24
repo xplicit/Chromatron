@@ -1,0 +1,31 @@
+﻿<Project>
+
+	<PropertyGroup>
+		<ProductVersion>1.0.0.108</ProductVersion>
+		<AssemblyVersion>1.0.0.108</AssemblyVersion>
+		<FileVersion>1.0.0.108</FileVersion>
+		<Version>1.0.0.108</Version>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Product>Chromatron</Product>
+		<Owners>Greeana LLC</Owners>
+		<Authors>Greeana LLC</Authors>
+		<Company>Greeana LLC</Company>
+		<Copyright>Copyright © 2024 Greeana LLC</Copyright>
+		<PackageProjectUrl>https://github.com/xplicit/Chromatron</PackageProjectUrl>
+		<PackageIcon>chromatron.png</PackageIcon>
+		<PackageTags>CEF Chromium HTML5 Desktop Chromatron CefGlue .NET 6</PackageTags>
+		<Description>Primary Chromatron implementation library - this is in .NET 6 and cross-platform - can be used in Windows, Linux, MacOS. Chromatron version naming is based Chromatron and Chromium versions implemented- major.minor.build.chromuim version e.g 1.0.0.108</Description>
+		<PackageReleaseNotes>
+			- Initial public release
+			- Support of CefGlue/Chromium v108.
+		</PackageReleaseNotes>
+		<RepositoryType>Github Repository</RepositoryType>
+		<RepositoryUrl>https://github.com/xplicit/Chromatron</RepositoryUrl>
+		<Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+	
+</Project>

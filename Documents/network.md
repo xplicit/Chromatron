@@ -1,20 +1,20 @@
 
 # Network Service
 
-Chromely via CefGlue provides 2 different ways of Interprocess Communication (IPC) between the Renderer and the Browser.
+Chromatron via CefGlue provides 2 different ways of Interprocess Communication (IPC) between the Renderer and the Browser.
 
-- Generic Message Routing - more info @ [Generic Message Routing](https://github.com/chromelyapps/Chromely/blob/master/Documents/generic_message_routing.md).
-- Ajax HTTP/XHR  -  more info @ [Custom Scheme Handling](https://github.com/chromelyapps/Chromely/blob/master/Documents/ajax_xhr_request_handling.md).
+- Generic Message Routing - more info @ [Generic Message Routing](https://github.com/xplicit/Chromatron/blob/master/Documents/generic_message_routing.md).
+- Ajax HTTP/XHR  -  more info @ [Custom Scheme Handling](https://github.com/xplicit/Chromatron/blob/master/Documents/ajax_xhr_request_handling.md).
 
 
-These allow Chromely to receieve JavaScript requests initated by the Renderer, processed by the Browser (C#) and returned Json data response to the Renderer. 
+These allow Chromatron to receieve JavaScript requests initated by the Renderer, processed by the Browser (C#) and returned Json data response to the Renderer. 
 
 ## Configuring Network Scheme/Request Endpoint
 
 The configuration of an IPC workflow involves:
 
 1. Create a Controller class
-2. Add the attribute - [ChromelyRouteAttribute](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Network/ControllerAttributes.cs) to the route actions (methods). Ensure that the "Path" property is set.
+2. Add the attribute - [ChromatronRouteAttribute](https://github.com/xplicit/Chromatron/blob/master/src/Chromely.Core/Network/ControllerAttributes.cs) to the route actions (methods). Ensure that the "Path" property is set.
 3. Register the Controller class
 4. Register a scheme (http, custom, etc)
 5. Create a JavaScript request in the Renderer html

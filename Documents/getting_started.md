@@ -5,23 +5,23 @@ When creating a new project, you want to create a .NET Core 3/.NET 5 Console Pro
 
 Visual Studio 2022/2019, JetBrains Rider or Visual Studio Code is preferred but any Editor can be used.
 
-Chromely ONLY supports x64 application. Developers can try x86 too but will not be supported.
+Chromatron ONLY supports x64 application. Developers can try x86 too but will not be supported.
 
-A simple Chromely project requires:
+A simple Chromatron project requires:
 
 ````csharp
 ThreadApt.STA();
 
 AppBuilder
    .Create(args)
-   .UseApp<ChromelyBasicApp>()
+   .UseApp<ChromatronBasicApp>()
    .Build()
    .Run();
 ````
 
-Chromely is configurable and extensible. 
+Chromatron is configurable and extensible. 
 
-To run a Chromely app, 3 primary objects can be configured. Other services/objects can be registered using [.NET Extensions Dependency Injection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/) in the [application class](https://github.com/chromelyapps/demo-projects/blob/53ccbdd22eac818ebf96df594f6fc81369965772/regular-chromely/CrossPlatDemo/Program.cs#L40).
+To run a Chromatron app, 3 primary objects can be configured. Other services/objects can be registered using [.NET Extensions Dependency Injection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/) in the [application class](https://github.com/chromelyapps/demo-projects/blob/53ccbdd22eac818ebf96df594f6fc81369965772/regular-chromely/CrossPlatDemo/Program.cs#L40).
 
 Full application builder options:
 
@@ -32,7 +32,7 @@ AppBuilder
    .Create(args)
    .UseConfig<CustomConfiguraton>()
    .UseWindow<CustomWindow>()
-   .UseApp<CustomChromelyApp>()
+   .UseApp<CustomChromatronApp>()
    .Build()
    .Run();
 
@@ -46,7 +46,7 @@ AppBuilder
    .Create(args)
    .UseConfig<CustomConfiguraton>(new CustomConfiguraton())
    .UseWindow<CustomWindow>(new CustomWindow())
-   .UseApp<CustomChromelyApp>(new CustomChromelyApp())
+   .UseApp<CustomChromatronApp>(new CustomChromatronApp())
    .Build()
    .Run();
 

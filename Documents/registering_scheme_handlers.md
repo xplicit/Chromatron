@@ -1,7 +1,7 @@
 
 # Registering Custom Scheme Handlers
 
-Interprocess Communication (IPC) in Chromely uses Restful model. It has a method (GET, POST..) and a resource has an identifier, which is a URI that uniquely identifies that resource. 
+Interprocess Communication (IPC) in Chromatron uses Restful model. It has a method (GET, POST..) and a resource has an identifier, which is a URI that uniquely identifies that resource. 
 
 A fully qualified qualified resource will be in format:
 scheme://host/resource_relative_path

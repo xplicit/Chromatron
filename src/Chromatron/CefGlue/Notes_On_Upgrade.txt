@@ -1,0 +1,46 @@
+1. Copy replace/overrwrite folder: https://gitlab.com/xiliumhq/chromiumembedded/cefglue/-/tree/master/CefGlue
+with https://github.com/xplicit/Chromatron/tree/master/src/Chromatron/CefGlue.
+
+2. Delete:
+       Files:
+           CefGlue.csproj
+           CefGlue.g.props
+           Interop/Base/cef_string_t.disabled.cs
+
+The CEF binaries required will be at:
+       src/Chromatron/CefGlue/Interop/version.g.cs#L12
+
+3. Update file src/Chromatron/Loader/CefLoader.cs
+
+Change all occurrences of CEF version in `FindCefArchiveName()`
+
+4. Update file src/Chromatron/CefRuntime.cs
+
+ Add property `CefVersion` before `ChromeVersion`
+```
+public static string CefVersion => libcef.CEF_VERSION;
+```
+
+### Nuget package downloader
+
+Unless "chromatron_win_cef_downloader.exe" is ready, remove the "build" folder.
+
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <None Include="build\**" Pack="True" PackagePath="build\" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <None Update="build\Chromatron.props">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\chromatron_win_cef_downloader.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\chromatron_win_cef_downloader.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+	
+
+

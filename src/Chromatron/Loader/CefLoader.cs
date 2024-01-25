@@ -20,7 +20,6 @@ namespace Chromatron.Loader;
 public class CefLoader
 {
     private const string CefBuildsDownloadUrl = "https://cef-builds.spotifycdn.com";
-    private static string CefBuildsDownloadIndex(string platform) => $"https://cef-builds.spotifycdn.com/index.html#{platform}_builds";
     private static string CefDownloadUrl(string name) => $"https://cef-builds.spotifycdn.com/{name}";
 
     private static readonly string MacOSConfigFile = "Info.plist";
@@ -110,8 +109,9 @@ public class CefLoader
     {
         _platform = platform;
         _architecture = RuntimeInformation.ProcessArchitecture;
-        _build = ChromatronRuntime.GetExpectedCefBuild();
-        Logger.Instance.Log.LogInformation("CefLoader: Load CEF for {_platform} {_architecture}, version {_build}", _platform, _architecture, _build);
+        _build = CefVersionProvider.GetExpectedCefBuild();
+        Logger.Instance.Log.LogInformation("CefLoader: Load CEF for {_platform} {_architecture}, version {_build}",
+            _platform, _architecture, _build);
 
         _lastPercent = 0;
         _numberOfParallelDownloads = Environment.ProcessorCount;
@@ -120,71 +120,6 @@ public class CefLoader
         _tempBz2File = Path.GetTempFileName();
         _tempTarFile = Path.GetTempFileName();
         _tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-    }
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="platform"></param>
-    /// <param name="processArchitecture"></param>
-    /// <param name="build"></param>
-    /// <returns></returns>
-    public static string FindCefArchiveName(ChromatronPlatform platform, Architecture processArchitecture, CefBuildNumbers build)
-    {
-        var arch = processArchitecture.ToString()
-            .Replace("X64", "64")
-            .Replace("X86", "32");
-        var platformIdentifier = (platform + arch).ToLowerInvariant();
-        var indexUrl = CefBuildsDownloadIndex(platformIdentifier);
-
-        // cef_binary_3.3626.1895.g7001d56_windows64_client.tar.bz2
-        var binaryNamePattern1 = $@"""(cef_binary_[0-9]+\.{build}\.[0-9]+\.(.*)_{platformIdentifier}_client.tar.bz2)""";
-
-        // cef_binary_73.1.5+g4a68f1d+chromium-73.0.3683.75_windows64_client.tar.bz2
-        // cef_binary_77.1.18+g8e8d602+chromium-77.0.3865.120_windows64_client.tar.bz2
-        var versionPattern = build.CefVersion.Replace("+", "%2B");
-        var binaryNamePattern2 = $@"""(cef_binary_{versionPattern}_{platformIdentifier}_minimal.tar.bz2)""";
-
-        using (var client = new WebClient())
-        {
-            Logger.Instance.Log.LogInformation("CefLoader: Load index page {indexUrl}", indexUrl);
-            var cefIndex = client.DownloadString(indexUrl);
-
-            // up to Chromium version 72
-            var found = new Regex(binaryNamePattern1, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase).Match(cefIndex);
-            if (found.Success)
-            {
-                return found.Groups[1].Value;
-            }
-            // from Chromium version 73 up
-            found = new Regex(binaryNamePattern2, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase).Match(cefIndex);
-            if (found.Success)
-            {
-                return found.Groups[1].Value;
-            }
-
-            // Hack until fixed.
-            if (!string.IsNullOrEmpty(binaryNamePattern1))
-            {
-                if (binaryNamePattern1.Contains("108.0.5359.125"))
-                {
-                    return $"cef_binary_108.4.13%2Bga98cd4c%2Bchromium-108.0.5359.125_{platformIdentifier}_minimal.tar.bz2";
-                }
-            }
-
-            if (!string.IsNullOrEmpty(binaryNamePattern2))
-            {
-                if (binaryNamePattern2.Contains("108.0.5359.125"))
-                {
-                    return $"cef_binary_108.4.13%2Bga98cd4c%2Bchromium-108.0.5359.125_{platformIdentifier}_minimal.tar.bz2";
-                }
-            }
-
-            var message = $"CEF for chrome version {CefRuntime.ChromeVersion} platform {platformIdentifier} not found.";
-            Logger.Instance.Log.LogError("CefLoader: {message}", message);
-        }
-
-        return "";
     }
 
     public static void SetMacOSAppName(IChromatronConfiguration config)
@@ -215,9 +150,31 @@ public class CefLoader
         }
     }
 
+    /// <summary>
+    /// Gets Chromium archive name at sprotifycdn
+    /// </summary>
+    /// <param name="platform"></param>
+    /// <param name="processArchitecture"></param>
+    /// <param name="build"></param>
+    /// <returns></returns>
+    public static string GetCefArchiveName(ChromatronPlatform platform, Architecture processArchitecture, CefBuildNumbers build)
+    {
+        // cef_binary_73.1.5+g4a68f1d+chromium-73.0.3683.75_windows64_minimal.tar.bz2
+        // cef_binary_77.1.18+g8e8d602+chromium-77.0.3865.120_windows64_minimal.tar.bz2
+        // cef_binary_77.1.18+g8e8d602+chromium-77.0.3865.120_windowsarm64_minimal.tar.bz2
+        // cef_binary_77.1.18+g8e8d602+chromium-77.0.3865.120_macosx64_minimal.tar.bz2
+        // cef_binary_77.1.18+g8e8d602+chromium-77.0.3865.120_macosarm64_minimal.tar.bz2
+        var arch = processArchitecture.ToString().Replace("X", string.Empty);
+        var platformIdentifier = (platform + arch).ToLowerInvariant();
+        var versionPattern = build.CefVersion.Replace("+", "%2B");
+        var cefArchiveName = $"cef_binary_{versionPattern}_{platformIdentifier}_minimal.tar.bz2";
+
+        return cefArchiveName;
+    }
+
     private void GetDownloadUrl()
     {
-        _archiveName = FindCefArchiveName(_platform, _architecture, _build);
+        _archiveName = GetCefArchiveName(_platform, _architecture, _build);
         _folderName = _archiveName
             .Replace("%2B", "+")
             .Replace(".tar.bz2", "");

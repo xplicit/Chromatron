@@ -24,7 +24,7 @@ public class SimpleLogger : ILogger
         appName = string.IsNullOrWhiteSpace(appName) ? Guid.NewGuid().ToString() : appName;
         _backupFilename = appName ?? _backupFilename;
         var fileName = $"{appName}.log";
-        _location = Path.Combine(exeLocation, "Logs");
+        _location = Path.Combine(exeLocation, "logs");
 
         if (string.IsNullOrEmpty(fullFilePath))
         {

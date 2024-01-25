@@ -38,7 +38,7 @@ public class DefaultConfiguration : IChromatronConfiguration
 
         CustomSettings = new Dictionary<string, string>()
         {
-            ["cefLogFile"] = "logs\\chromatron.cef.log",
+            ["cefLogFile"] = Path.Combine("logs","chromatron.cef.log"),
             ["logSeverity"] = "info",
             ["locale"] = "en-US"
         };

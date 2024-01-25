@@ -80,7 +80,7 @@ public class ChromatronConfigTests
             config.UrlSchemes.Add(schemeExternal1);
 
             config.CustomSettings = new Dictionary<string, string>();
-            config.CustomSettings["cefLogFile"] = "logs\\chromatron.cef.log";
+            config.CustomSettings["cefLogFile"] = Path.Combine("logs","chromatron.cef.log");
             config.CustomSettings["logSeverity"] = "info";
             config.CustomSettings["locale"] = "en-US";
 

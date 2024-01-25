@@ -69,7 +69,7 @@ public partial class WindowController
         {
             MultiThreadedMessageLoop = (_config.Platform == ChromatronPlatform.Windows && !_config.WindowOptions.UseOnlyCefMessageLoop),
             LogSeverity = CefLogSeverity.Info,
-            LogFile = "logs\\chromatron.cef_" + DateTime.Now.ToString("yyyyMMdd") + ".log",
+            LogFile = Path.Combine("logs", "chromatron.cef_" + DateTime.Now.ToString("yyyyMMdd") + ".log"),
             ResourcesDirPath = _config.AppExeLocation
         };
 

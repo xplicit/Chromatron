@@ -5,58 +5,55 @@ namespace Chromatron.Tests.ChromatronCore;
 
 public class ChromatronRouteProviderTests
 {
-    private readonly IServiceProvider _serviceProvider;
-    private readonly IChromatronRouteProvider _routeProvider;
-    private readonly List<ChromatronController> _controllers;
+    private readonly IChromatronRouteProvider _routeProvider = Startup.GetProvider().GetRequiredService<IChromatronRouteProvider>();
+    private readonly List<ChromatronController> _controllers = Startup.GetProvider().GetServices<ChromatronController>().ToList();
 
-    public ChromatronRouteProviderTests(IServiceProvider serviceProvider, IChromatronRouteProvider routeProvider)
+    [OneTimeSetUp]
+    public void ChromatronRouteProviderTestsSetup()
     {
-        _serviceProvider = serviceProvider;
-        _routeProvider = routeProvider;
-        _controllers = _serviceProvider.GetServices<ChromatronController>().ToList();
-        routeProvider.RegisterAllRoutes(_controllers);
+        _routeProvider.RegisterAllRoutes(_controllers);
     }
 
-    [Fact]
+    [Test]
     public void EnsureAllRoutesAreRegisteredTest()
     {
         foreach (var routePathItem in TodoController.GetRoutePaths)
         {
             var key = RouteKeys.CreateActionKey(routePathItem.Value);
-            Assert.True(_routeProvider.RouteMap.ContainsKey(key));
+            _routeProvider.RouteMap.ContainsKey(key).Should().BeTrue();
         }
     }
 
-    [Fact]
+    [Test]
     public void RouteExistsTest()
     {
         foreach (var routePathItem in TodoController.GetRoutePaths)
         {
-            Assert.True(_routeProvider.RouteExists("http://chromatron.com" + routePathItem.Value));
+            _routeProvider.RouteExists("http://chromatron.com" + routePathItem.Value).Should().BeTrue();
         }
     }
 
-    [Fact]
+    [Test]
     public void GetRouteTest()
     {
         foreach (var routePathItem in TodoController.GetRoutePaths)
         {
-            Assert.NotNull(_routeProvider.GetRoute("http://chromatron.com" + routePathItem.Value));
+            _routeProvider.GetRoute("http://chromatron.com" + routePathItem.Value).Should().NotBeNull();
         }
     }
 
-    [Fact]
+    [Test]
     public void IsRouteAsyncTest()
     {
         foreach (var routePathItem in TodoController.GetRoutePaths)
         {
             if (routePathItem.Value.Contains("/async/"))
             {
-                Assert.True(_routeProvider.IsRouteAsync("http://chromatron.com" + routePathItem.Value));
+                _routeProvider.IsRouteAsync("http://chromatron.com" + routePathItem.Value).Should().BeTrue();
             }
             else
             {
-                Assert.False(_routeProvider.IsRouteAsync("http://chromatron.com" + routePathItem.Value));
+                _routeProvider.IsRouteAsync("http://chromatron.com" + routePathItem.Value).Should().BeFalse();
             }
         }
     }

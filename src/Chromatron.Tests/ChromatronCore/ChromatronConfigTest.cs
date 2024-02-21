@@ -5,7 +5,7 @@ namespace Chromatron.Tests.ChromatronCore;
 
 public class ChromatronConfigTests
 {
-    [Fact]
+    [Test]
     public void ConfigTest()
     {
         // Arrange
@@ -21,11 +21,11 @@ public class ChromatronConfigTests
         var config = DefaultConfig;
 
         // Assert
-        Assert.NotNull(config);
-        Assert.Equal(appName, config.AppName);
-        Assert.Equal(windowTitle, config.WindowOptions.Title);
-        Assert.Equal(platform, config.Platform);
-        Assert.Equal(appExeLocation, config.AppExeLocation);
+        config.Should().NotBeNull();
+        config.AppName.Should().Be(appName);
+        config.WindowOptions.Title.Should().Be(windowTitle);
+        config.Platform.Should().Be(platform);
+        config.AppExeLocation.Should().Be(appExeLocation);
     }
 
     private IChromatronConfiguration DefaultConfig

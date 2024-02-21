@@ -5,7 +5,7 @@ namespace Chromatron.Tests.ChromatronCore;
 
 public class AppSettingsTests
 {
-    [Fact]
+    [Test]
     public void DefaultAppSettingsTest()
     {
         ChromatronAppUser.App.Properties.Settings.Item1 = "Market 01";
@@ -36,15 +36,15 @@ public class AppSettingsTests
         var item1 = (string)ChromatronAppUser.App.Properties.Settings.Item1;
         var item2 = (string)ChromatronAppUser.App.Properties.Settings.Item2;
         var testItems = (ArrayList)ChromatronAppUser.App.Properties.Settings.TestItems;
-        Assert.NotNull(item1);
-        Assert.NotNull(item2);
-        Assert.NotNull(testItems);
+        item1.Should().NotBeNull();
+        item2.Should().NotBeNull();
+        testItems.Should().NotBeNull();
 
-        Assert.Equal("Market 01", item1);
-        Assert.Equal("Year 2020", item2);
-        Assert.Equal("item0001", testItems[0]);
-        Assert.Equal("item0002", testItems[1]);
-        Assert.Equal("item0003", testItems[2]);
+        item1.Should().Be("Market 01");
+        item2.Should().Be("Year 2020");
+        testItems[0].Should().Be("item0001");
+        testItems[1].Should().Be("item0002");
+        testItems[2].Should().Be("item0003");
 
         // Delete config file if exists
         // Delete config file if exists

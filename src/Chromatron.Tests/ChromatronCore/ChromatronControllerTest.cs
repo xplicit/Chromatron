@@ -4,34 +4,32 @@
 #pragma warning disable IDE0038
 
 namespace Chromatron.Tests.ChromatronCore;
+
 public class ChromatronControllerTests
 {
-    private readonly IServiceProvider _serviceProvider;
-    private readonly IChromatronRouteProvider _routeProvider;
-    private readonly List<ChromatronController> _controllers;
+    private readonly IChromatronRouteProvider _routeProvider = Startup.GetProvider().GetRequiredService<IChromatronRouteProvider>();
+    private readonly List<ChromatronController> _controllers = Startup.GetProvider().GetServices<ChromatronController>().ToList();
 
-    public ChromatronControllerTests(IServiceProvider serviceProvider, IChromatronRouteProvider routeProvider)
+    [OneTimeSetUp]
+    public void ChromatronControllerTestsSetup()
     {
-        _serviceProvider = serviceProvider;
-        _routeProvider = routeProvider;
-        _controllers = serviceProvider.GetServices<ChromatronController>().ToList();
-        routeProvider.RegisterAllRoutes(_controllers);
+        _routeProvider.RegisterAllRoutes(_controllers);
     }
 
-    [Fact]
+    [Test]
     public void TodoController_Routes_Registered_Test()
     {
-        Assert.NotNull(_controllers);
-        Assert.True(_controllers.Any());
-        Assert.True(Attribute.IsDefined(_controllers[0].GetType(), typeof(ChromatronControllerAttribute)));
-        bool todoControllerFound = _controllers.Any(x => x is TodoController);
-        Assert.True(todoControllerFound);
+        _controllers.Should().NotBeNull();
+        _controllers.Should().NotBeEmpty();
+        _controllers.Should().Contain(x => x is TodoController);
+        var actual = Attribute.IsDefined(_controllers[0].GetType(), typeof(ChromatronControllerAttribute));
+        actual.Should().BeTrue();
     }
 
     /// <summary>
     /// The route count test.
     /// </summary>
-    [Fact]
+    [Test]
     public void RouteCountTest()
     {
         var todoRouteCount = TodoController.GetRoutePaths.Count;
@@ -45,10 +43,10 @@ public class ChromatronControllerTests
             }
         }
 
-        Assert.Equal(todoRouteCount, todoRouteCountRegistered);
+        todoRouteCountRegistered.Should().Be(todoRouteCount);
     }
 
-    [Fact]
+    [Test]
     public void CreateUpdateGetDeleteTest()
     {
         var todoItem = TodoItem.FakeTodoItem;
@@ -58,7 +56,7 @@ public class ChromatronControllerTests
         postData.todoItem = todoItem;
 
         var route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.CreateItem]);
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
 
         var createRequest = new ChromatronRequest
         {
@@ -67,8 +65,8 @@ public class ChromatronControllerTests
         var createResponse = route?.Invoke(createRequest);
         var createData = createResponse is not null && createResponse.Data is int ? (int)createResponse.Data : -1; 
 
-        Assert.NotNull(createResponse);
-        Assert.True(createData > 0);
+        createResponse.Should().NotBeNull();
+        createData.Should().BeGreaterThan(0);
 
         // Update
         var newItemName = TodoItem.FakeTodoItemName;
@@ -78,7 +76,7 @@ public class ChromatronControllerTests
         postData.todoItem = todoItem;
 
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.UpdateItem]);
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
 
         var updateRequest = new ChromatronRequest
         {
@@ -87,12 +85,12 @@ public class ChromatronControllerTests
         var updateResponse = route?.Invoke(updateRequest) as IChromatronResponse;
         var updateData = updateResponse is not null && updateResponse.Data is int ? (int)updateResponse.Data : -1;
 
-        Assert.NotNull(updateResponse);
-        Assert.True(updateData > 0);
+        updateResponse.Should().NotBeNull();
+        updateData.Should().BeGreaterThan(0);
 
         // Get
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.GetItem]);
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
 
         var getRequest = new ChromatronRequest
         {
@@ -102,19 +100,19 @@ public class ChromatronControllerTests
         var getResponse = route?.Invoke(getRequest) as IChromatronResponse;
         TodoItem? getData = getResponse?.Data as TodoItem;
 
-        Assert.NotNull(getResponse);
-        Assert.NotNull(getData);
+        getResponse.Should().NotBeNull();
+        getData.Should().NotBeNull();
 
         if (getData is not null)
         {
-            Assert.Equal(todoItem.Id, getData.Id);
-            Assert.Equal(todoItem.Name, getData.Name);
-            Assert.Equal(todoItem.IsComplete, getData.IsComplete);
+            getData.Id.Should().Be(todoItem.Id);
+            getData.Name.Should().Be(todoItem.Name);
+            getData.IsComplete.Should().Be(todoItem.IsComplete);
         }
 
         // Delete
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.DeleteItem]);
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
 
         var deleteRequest = new ChromatronRequest
         {
@@ -124,12 +122,12 @@ public class ChromatronControllerTests
         var deleteResponse = route?.Invoke(deleteRequest) as IChromatronResponse;
         var deleteData = deleteResponse is not null && deleteResponse.Data is int ? (int)deleteResponse.Data : -1;
 
-        Assert.NotNull(deleteResponse);
-        Assert.True(deleteData > 0);
+        deleteResponse.Should().NotBeNull();
+        deleteData.Should().BeGreaterThan(0);
 
         // Get: Ensure delete
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.GetItem]);
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
 
         getRequest = new ChromatronRequest
         {
@@ -139,11 +137,11 @@ public class ChromatronControllerTests
         getResponse = route?.Invoke(getRequest) as IChromatronResponse;
         getData = getResponse?.Data as TodoItem;
 
-        Assert.NotNull(getResponse);
-        Assert.Null(getData);
+        getResponse.Should().NotBeNull();
+        getData.Should().BeNull();
     }
 
-    [Fact]
+    [Test]
     public async Task CreateUpdateGetDeleteAsyncTestAsync()
     {
         var todoItem = TodoItem.FakeTodoItem;
@@ -154,7 +152,7 @@ public class ChromatronControllerTests
 
         var route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.CreateItemAsync]);
 
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
         if (route is not null)
         {
             var createRequest = new ChromatronRequest
@@ -164,8 +162,8 @@ public class ChromatronControllerTests
             var createResponse = await route.InvokeAsync(createRequest);
             var createData = createResponse is not null && createResponse.Data is int ? (int)createResponse.Data : -1;
 
-            Assert.NotNull(createResponse);
-            Assert.True(createData > 0);
+            createResponse.Should().NotBeNull();
+            createData.Should().BeGreaterThan(0);
         }
 
         // Update
@@ -177,7 +175,7 @@ public class ChromatronControllerTests
 
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.UpdateItemAsync]);
 
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
         if (route is not null)
         {
             var updateRequest = new ChromatronRequest
@@ -187,13 +185,13 @@ public class ChromatronControllerTests
             var updateResponse = await route.InvokeAsync(updateRequest) as IChromatronResponse;
             var updateData = updateResponse is not null && updateResponse.Data is int ? (int)updateResponse.Data : -1;
 
-            Assert.NotNull(updateResponse);
-            Assert.True(updateData > 0);
+            updateResponse.Should().NotBeNull();
+            updateData.Should().BeGreaterThan(0);
         }
 
         // Get
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.GetItemAsync]);
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
 
         if (route is not null)
         {
@@ -205,21 +203,21 @@ public class ChromatronControllerTests
             var getResponse = await route.InvokeAsync(getRequest);
             var getData = getResponse.Data as TodoItem;
 
-            Assert.NotNull(getResponse);
+            getResponse.Should().NotBeNull();
             
-            Assert.NotNull(getData);
+            getData.Should().NotBeNull();
             if (getData is not null)
             {
-                Assert.Equal(todoItem.Id, getData.Id);
-                Assert.Equal(todoItem.Name, getData.Name);
-                Assert.Equal(todoItem.IsComplete, getData.IsComplete);
+                getData.Id.Should().Be(todoItem.Id);
+                getData.Name.Should().Be(todoItem.Name);
+                getData.IsComplete.Should().Be(todoItem.IsComplete);
             }
         }
 
         // Delete
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.DeleteItemAsync]);
 
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
         if (route is not null)
         {
             var deleteRequest = new ChromatronRequest
@@ -230,14 +228,14 @@ public class ChromatronControllerTests
             var deleteResponse = await route.InvokeAsync(deleteRequest) as IChromatronResponse;
             var deleteData = deleteResponse is not null && deleteResponse.Data is int ? (int)deleteResponse.Data : -1;
 
-            Assert.NotNull(deleteResponse);
-            Assert.True(deleteData > 0);
+            deleteResponse.Should().NotBeNull();
+            deleteData.Should().BeGreaterThan(0);
         }
 
         // Get: Ensure delete
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.GetItemAsync]);
 
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
         if (route is not null)
         {
             var getRequest = new ChromatronRequest
@@ -248,23 +246,23 @@ public class ChromatronControllerTests
             var getResponse = await route.InvokeAsync(getRequest) as IChromatronResponse;
             var getData = getResponse.Data as TodoItem;
 
-            Assert.NotNull(getResponse);
-            Assert.Null(getData);
+            getResponse.Should().NotBeNull();
+            getData.Should().BeNull();
         }
     }
 
-    [Fact]
+    [Test]
     public void GetAllTodoItemsTest()
     {
         var route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.GetAllItems]);
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
 
         var request1 = new ChromatronRequest();
         var response1 = route?.Invoke(request1);
         var data1 = response1?.Data as List<TodoItem>;
 
-        Assert.NotNull(response1);
-        Assert.NotNull(data1);
+        response1.Should().NotBeNull();
+        data1.Should().NotBeNull();
 
         var startCount = data1?.Count ?? -1;
 
@@ -274,7 +272,7 @@ public class ChromatronControllerTests
         postData.todoItem = todoItem;
 
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.CreateItem]);
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
 
         var request2 = new ChromatronRequest
         {
@@ -283,40 +281,40 @@ public class ChromatronControllerTests
         var response2 = route?.Invoke(request2) as IChromatronResponse;
         var data2 = response2 is not null && response2.Data is int ? (int)response2.Data : -1;
 
-        Assert.NotNull(response2);
-        Assert.True(data2 > 0);
+        response2.Should().NotBeNull();
+        data2.Should().BeGreaterThan(0);
 
         // Get a new list
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.GetAllItems]);
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
 
         request1 = new ChromatronRequest();
         response1 = route?.Invoke(request1) as IChromatronResponse;
         data1 = response1?.Data as List<TodoItem>;
 
-        Assert.NotNull(response1);
-        Assert.NotNull(data1);
+        response1.Should().NotBeNull();
+        data1.Should().NotBeNull();
 
         var endCount = data1 is not null ? data1.Count : -1;
 
-        Assert.Equal(startCount + 1, endCount);
+        endCount.Should().Be(startCount + 1);
     }
 
-    [Fact]
+    [Test]
     public async Task GetAllTodoItemsAsyncTestAsync()
     {
         var route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.GetAllItemsAsync]);
 
         var startCount = -1;
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
         if (route is not null)
         {
             var request = new ChromatronRequest();
             var response = await route.InvokeAsync(request);
             var data = response.Data as List<TodoItem>;
 
-            Assert.NotNull(response);
-            Assert.NotNull(data);
+            response.Should().NotBeNull();
+            data.Should().NotBeNull();
 
             startCount = data is not null ? data.Count : -1;
         }
@@ -328,7 +326,7 @@ public class ChromatronControllerTests
 
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.CreateItemAsync]);
 
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
         if (route is not null)
         {
             var request = new ChromatronRequest
@@ -338,27 +336,27 @@ public class ChromatronControllerTests
             var response = await route.InvokeAsync(request);
             var data = response?.Data != null ? (int)response.Data : -1;
 
-            Assert.NotNull(response);
-            Assert.True(data > 0);
+            response.Should().NotBeNull();
+            data.Should().BeGreaterThan(0);
         }
 
         // Get a new list
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.GetAllItemsAsync]);
 
         var endCount = -1;
-        Assert.NotNull(route);
+        route.Should().NotBeNull();
         if (route is not null)
         {
             var request = new ChromatronRequest();
             var response = await route.InvokeAsync(request) as IChromatronResponse;
             var data = response.Data as List<TodoItem>;
 
-            Assert.NotNull(response);
-            Assert.NotNull(data);
+            response.Should().NotBeNull();
+            data.Should().NotBeNull();
 
             endCount = data is not null ? data.Count : -1;
         }
 
-        Assert.Equal(startCount + 1, endCount);
+        endCount.Should().Be(startCount + 1);
     }
 }

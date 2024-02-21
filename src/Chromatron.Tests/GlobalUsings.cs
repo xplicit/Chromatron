@@ -16,6 +16,7 @@ global using Chromatron.Tests.Data;
 global using Chromatron.Tests.ChromatronControllers;
 global using Chromatron.Tests.Models;
 
-global using Xunit;
+global using NUnit.Framework;
+global using FluentAssertions;
 
 

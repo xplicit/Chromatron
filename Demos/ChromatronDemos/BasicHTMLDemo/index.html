@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * {
+            background-color: blanchedalmond;
+            overflow: hidden;
+        }
+
+        body {
+            height: 100vh;
+            width: 100wh;
+        }
+
+        h1 {
+            margin: 0 auto;
+            text-align: center;
+            color: rgb(22, 1, 1);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .container {
+            width: 80%;
+            height: 80%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 2%;
+            background-color: aquamarine;
+            border-radius: 5px;
+            position: absolute;
+            z-index: 1;
+            left: 10%;
+        }
+        .key-input-group {
+            width: 320px;
+            height: 32px;
+            display: block;
+            position: fixed;
+            z-index: 2;
+            top: 50%;
+            margin-left: 25%;
+            padding: 4px;
+        }
+        .api-key-input {
+            width: 70%;
+            height: 85%;
+            margin-bottom: 3%;
+            border: 1px solid rgb(12, 8, 218);
+            border-radius: 5px;
+            margin-right: 2%;
+            padding: 2px;
+        }
+        .send-api-key {
+            width: 20%;
+            height: 85%;
+            margin-bottom: 2%;
+            padding: 2px;
+            border: 1px solid greenyellow;
+            border-radius: 5px;
+        }
+        .message-input-group {
+            width: 320px;
+            height: 32px;
+            display: none;
+            position: fixed;
+            z-index: 2;
+            bottom: 10%;
+            margin-left: 25%;
+            padding: 4px;
+        }
+        .message-input {
+            width: 70%;
+            height: 85%;
+            margin-bottom: 3%;
+            border: 1px solid rgb(12, 8, 218);
+            border-radius: 5px;
+            margin-right: 2%;
+            padding: 2px;
+        }
+        .send-message-button {
+            width: 20%;
+            height: 85%;
+            margin-bottom: 2%;
+            padding: 2px;
+            border: 1px solid greenyellow;
+            border-radius: 5px;
+        }
+        .chat-history {
+            display: none;
+            width: 75%;
+            height: 75%;
+            background-color: azure;
+            margin: 0 auto;
+            margin-top: 50px;
+            overflow: scroll;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: azure;
+        }
+        .user-message {
+            display: block;
+            width: 35%;
+            height: fit-content;
+            background-color: beige;
+            margin-left: 61%;
+            border: 1px solid rgb(191, 191, 247);
+            border-radius: 10px;
+            padding: 2px;
+        }
+        .gpt-joke {
+            display: block;
+            width: 35%;
+            height: fit-content;
+            background-color: beige;
+            margin-left: 4%;
+            border: 1px solid rgb(191, 191, 247);
+            border-radius: 10px;
+            padding: 2px;
+        }
+    </style>
+    <title>Chat GPT Jokes</title>
+</head>
+<body>
+    <h1>Chat GPT Jokes</h1>
+    <div class="container">
+        <div class="key-input-group" id="key-input-group">
+            <input type="text" placeholder="Add your OpenAPI key..." class="api-key-input" />
+            <button class="send-api-key">Send key</button>
+        </div>
+        <section class="chat-history" id="chat-history"></section>
+        <div class="message-input-group" id="message-input-group">
+            <input type="text" class="message-input" placeholder="What is a joke about?" />
+            <button class="send-message-button">Send</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+        const inputField = document.querySelector(".message-input");
+        const chatHistory = document.querySelector(".chat-history");
+        const sendButton = document.querySelector(".send-message-button");
+        const apiKeyInput = document.querySelector(".api-key-input");
+        const sendApiKeyButton = document.querySelector(".send-api-key");
+
+        function changeInputGroups () {
+            if (apiKeyInput.value !== null) {
+                document.getElementById("key-input-group").style.display = "none";
+                document.getElementById("chat-history").style.display = "block";
+                document.getElementById("message-input-group").style.display = "block";
+            }
+        };
+
+        async function askSomeJoke () {
+
+            const chatOptions = {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${apiKeyInput.value}`,
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [{
+                        role: "user",
+                        content: `Tell me some joke about ${inputField.value}`
+                    }]
+                })
+            };
+
+            const userMessage = document.createElement("p");
+            userMessage.classList.add("user-message");
+            userMessage.textContent = `Tell me some joke about ${inputField.value}`;
+            chatHistory.append(userMessage);
+
+            try {
+                const apiResponse = await fetch("https://api.openai.com/v1/chat/completions", chatOptions);
+                const chatData = await apiResponse.json();
+                const message = chatData.choices[0].message.content;
+
+                if (message !== null) {
+                    const gptJoke = document.createElement("p");
+                    gptJoke.classList.add("gpt-joke");
+                    gptJoke.textContent = message;
+                    chatHistory.append(gptJoke);
+                }
+            } catch (error) {
+                console.error(error);
+                const chatError = document.createElement("p");
+                chatError.classList.add("gpt-joke");
+                chatError.textContent = "I'm sorry! Something wrong with my connection...";
+                chatHistory.append(chatError);
+            }
+
+            inputField.value = "";
+        };
+
+
+        sendButton.addEventListener("click", askSomeJoke);
+        sendApiKeyButton.addEventListener("click", changeInputGroups);
+    </script>
+</body>
+</html>

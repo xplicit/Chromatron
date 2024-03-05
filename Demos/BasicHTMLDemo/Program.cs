@@ -1,6 +1,6 @@
-﻿using Chromely;
-using Chromely.Core;
-using Chromely.Core.Configuration;
+﻿using Chromatron;
+using Chromatron.Core;
+using Chromatron.Core.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -26,7 +26,7 @@ namespace BasicHTMLDemo
         }
     }
 
-    public class DemoApp : ChromelyBasicApp
+    public class DemoApp : ChromatronBasicApp
     {
         public override void ConfigureServices(IServiceCollection services)
         {

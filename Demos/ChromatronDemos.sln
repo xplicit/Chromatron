@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChromatronDemos", "ChromatronDemos.csproj", "{669BA653-D951-4942-B197-F9F02B7C80D7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicHTMLDemo", "BasicHTMLDemo\BasicHTMLDemo.csproj", "{57507171-25EA-4F9D-8EA3-BCED5A6BDC53}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactDemo", "ReactDemo\ReactDemo.csproj", "{E4E5705B-BB28-403A-91AC-C71410D6E7F9}"

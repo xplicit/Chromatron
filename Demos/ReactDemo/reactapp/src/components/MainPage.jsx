@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import styled from "styled-components";
 import { restClient } from "polygon.io";
 
@@ -54,13 +54,46 @@ const StyledSpan = styled.span`
     padding: 2px;
 `;
 
+const InputForm = styled.div`
+    width: 384px;
+    height: 42px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 0 auto;
+    margin-top: 64px;
+`;
+
+const StyledKeyInput = styled.input`
+    width: 80%;
+    height: auto;
+    background-color: #ffffff;
+    border: 1px solid #f16969;
+    border-radius: 6px;
+`;
+
+const StyledSendButton = styled.button`
+    width: 16%;
+    margin-left: 2%;
+    height: auto;
+    text-align: center;
+    background-color: #2284d4;
+    color: white;
+    border: 2px solid #e8e9eb;
+    border-radius: 6px;
+`;
+
 export const MainPage = () => {
 
     const [usdData, setUsdData] = useState();
     const [cryptoData, setCryptoData] = useState();
+    const [apiKey, setApiKey] = useState();
 
-    const apiKey = "kAnzWCwy5ZXzPHYZ2DHmmO7LBIA1y62G";
     const rest = restClient(apiKey);
+
+    const handleApiKeyInput = (event) => {
+        setApiKey(event.target.value);
+    };
 
     const formattedCurrentDate = useMemo(() => {
         const newDate = new Date();
@@ -87,18 +120,34 @@ export const MainPage = () => {
         });
     };
 
-    useEffect(() => {
-        getUsdData();
+    const handleSendClick = () => {
         getCryptoData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        getUsdData();
+    };
+
+    useEffect(() => {
+        if (usdData !== undefined && cryptoData !== undefined) {
+            setApiKey("");
+        }
+    }, [usdData, cryptoData]);
 
     return (
         <MainBlock className="main-page">
             <Header>
                 Demo App With Poligon IO data.
             </Header>
-            {usdData !== undefined && (
+            {usdData === undefined && cryptoData === undefined && (
+                <InputForm>
+                    <StyledKeyInput
+                        type="text"
+                        value={apiKey}
+                        placeholder="Add your Poligon.io API key"
+                        onChange={handleApiKeyInput}
+                    />
+                    <StyledSendButton onClick={handleSendClick}>Send</StyledSendButton>
+                </InputForm>
+            )}
+            {(apiKey !== undefined && usdData !== undefined) && (
                 <UsdPair>
                     <StyledH2>EUR/USD</StyledH2>
                     <StyledSpan>C: {usdData.c}</StyledSpan>
@@ -111,7 +160,7 @@ export const MainPage = () => {
                     <StyledSpan>Open: {usdData.open}</StyledSpan>
                 </UsdPair>
             )}
-            {cryptoData !== undefined && (
+            {(apiKey !== undefined && cryptoData !== undefined) && (
                 <CryptoCurrency>
                     <StyledH2>BTC/USD</StyledH2>
                     <StyledSpan>C: {cryptoData.c}</StyledSpan>

@@ -6,9 +6,42 @@
 </head>
 <body style="background-color: cornflowerblue;">
 
-<p title="Hello from ToolTip!">Hello Chromatron!</p>
+<p id="message" title="Hello from ToolTip!">Hello Chromatron!</p>
+<button onclick="try_success()">Click me!</button>
 
 <script>
+    function try_success() {
+        try {
+            window.cefQuery({
+                request: JSON.stringify({
+                    "url": "/info", // /info - hard-coded routePath in the handler
+                    "parameters": null,
+                    "postData": null
+                }),
+
+                onSuccess: function (responseJson) {
+                    var response = JSON.parse(responseJson);
+                    console.log("Response: " + response.Status);
+                    show_message(response.Data.objective);
+                },
+
+                onFailure: function (err, msg) {
+                    console.error(err, msg);
+                }
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    function show_message(msg) {
+        try {
+            document.getElementById("message").innerText = msg;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     console.log("index.html loaded successfully.");
 </script>
 </body>
